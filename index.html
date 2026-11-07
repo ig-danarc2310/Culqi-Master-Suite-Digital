@@ -1,0 +1,2187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culqi Master Suite Unificada digital</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22white%22 rx=%2220%22/><path d=%22M55 10 L25 55 L50 55 L45 90 L80 45 L55 45 Z%22 fill=%22black%22 stroke=%22black%22 stroke-width=%225%22 stroke-linejoin=%22round%22/></svg>">
+    <style>
+        /* === VARIABLES GLOBALES UNIFICADAS === */
+        :root {
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --input-bg: #1e1e1e;
+            --text: #e0e0e0;
+            --text-dim: #888;
+            --border: #222;
+            --btn-border: #ffffff;
+            --accent: #2196F3;
+            --success: #00e676;
+            --warning: #ffd600;
+            --danger: #ff1744;
+            --gap: 12px;
+            --radius: 10px;
+            --main-width: 650px;
+        }
+
+        /* === MODO CLARO (COLORES VIVOS Y PASTELES) === */
+        body.light-mode {
+            --bg: #f3f4f6;          
+            --surface: #ffffff;     
+            --input-bg: #e5e7eb;    
+            --text: #1f2937;        
+            --text-dim: #6b7280;    
+            --border: #d1d5db;      
+            --btn-border: #9ca3af;
+            --accent: #3b82f6;      
+            --success: #10b981;     
+            --warning: #f59e0b;     
+            --danger: #ef4444;      
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+        
+        body { 
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg); 
+            color: var(--text); 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            min-height: 100vh; 
+            padding: 20px 10px; 
+            transition: all 0.3s ease;
+            font-size: 1.1rem; /* Incremento general de textos */
+        }
+
+        /* === NAVEGACIÓN UNIFICADA === */
+        .nav-bubbles {
+            display: flex;
+            gap: 10px;
+            background: var(--surface);
+            padding: 8px 15px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            position: sticky;
+            top: 10px;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            max-width: 100%;
+            flex-wrap: wrap; 
+            justify-content: center;
+        }
+
+        .bubble {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 1px solid transparent;
+            background: var(--input-bg);
+            color: var(--text-dim);
+            font-size: 1.05rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+            position: relative; 
+        }
+
+        .bubble.active {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+            border-color: var(--accent);
+        }
+
+        .bubble:hover:not(.active) {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .bubble::after {
+            content: attr(data-title);
+            position: absolute;
+            bottom: calc(100% + 5px);
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--text);
+            color: var(--bg);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            pointer-events: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            z-index: 1001;
+        }
+        .bubble::before { 
+            content: '';
+            position: absolute;
+            bottom: calc(100% + 1px);
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--text) transparent transparent transparent;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            pointer-events: none;
+            z-index: 1001;
+        }
+        .bubble:hover::after {
+            opacity: 1;
+            visibility: visible;
+            bottom: calc(100% + 10px);
+        }
+        .bubble:hover::before {
+            opacity: 1;
+            visibility: visible;
+            bottom: calc(100% + 5px);
+        }
+
+        /* === CONTENEDORES === */
+        .tool-container {
+            display: none;
+            flex-direction: column;
+            gap: var(--gap);
+            width: 100%;
+            max-width: var(--main-width);
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .tool-container.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card { 
+            background: var(--surface); 
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px; 
+            display: flex; 
+            flex-direction: column;
+            gap: 10px;
+            transition: opacity 0.3s ease;
+            overflow: visible; /* Remover restricciones de altura */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h2 { 
+            text-align: center; 
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            user-select: none;
+        }
+
+        /* === ESTILOS COMPARTIDOS VARIOS === */
+        .cismo-label {
+            font-family: 'Consolas', monospace;
+            font-size: 0.75rem;
+            text-align: center;
+            background: var(--border);
+            padding: 6px;
+            border-radius: 6px;
+            color: var(--warning);
+            text-transform: uppercase;
+        }
+
+        /* === HERRAMIENTA 1: DASHBOARD === */
+        .dashboard-wrapper { display: flex; flex-direction: column; gap: var(--gap); width: 100%; }
+        
+        /* Contenedor Flex para alinear las dos tarjetas de temporizadores lado a lado */
+        .timers-row { 
+            display: flex; 
+            gap: var(--gap); 
+            width: 100%;
+            box-sizing: border-box;
+            max-width: var(--main-width);
+            align-items: stretch;
+            flex-wrap: nowrap; /* FORZAR UNA SOLA FILA */
+        }
+        
+        .timer-card { 
+            flex: 1; 
+            background: var(--surface); 
+            border: 1px solid var(--border); 
+            border-radius: var(--radius); 
+            padding: 10px; 
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            gap: 4px; 
+            min-width: 0; 
+            position: relative; 
+        }
+
+        /* Botón de pantalla completa REUBICADO A LA IZQUIERDA */
+        .fullscreen-btn {
+            position: absolute;
+            top: 5px;
+            left: 5px; /* REUBICADO A LA IZQUIERDA */
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s, background 0.2s;
+            z-index: 10;
+        }
+        .fullscreen-btn:hover {
+            color: var(--accent);
+            background: rgba(128,128,128,0.1);
+        }
+        .fullscreen-btn svg { width: 16px; height: 16px; fill: currentColor; }
+        
+        /* Controles Entrada, Almuerzo, Salida */
+        /* Eliminados los botones laterales, se confía en el hover+wheel */
+        .timer-carousel { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; overflow: hidden;}
+        
+        /* El scroll area que captura la rueda del mouse */
+        .carousel-scroll-area {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: ns-resize; /* Cursor para indicar scroll vertical */
+        }
+
+        .carousel-content { flex: 1; display: none; width: 100%;}
+        .carousel-content.active { display: block; animation: fadeIn 0.2s ease;}
+        
+        .dual-col-timer {
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            gap: 15px; 
+            width: 100%;
+        }
+        
+        .timer-col-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+        }
+        
+        .timer-col-right {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+        }
+
+        .label-s { font-size: 0.95rem; font-weight: bold; color: var(--text-dim); text-transform: uppercase; margin-bottom: 2px;}
+        .time-label { font-size: 0.8rem; font-weight: bold; color: var(--text-dim); margin-bottom: 4px; text-transform: uppercase; }
+        .time-input-custom { background: transparent !important; border: 1px solid var(--btn-border) !important; color: var(--text) !important; font-size: 0.9rem; padding: 4px 6px; width: 85px; text-align: center; border-radius: 6px; font-family: 'Consolas', monospace; -webkit-appearance: none; appearance: none; }
+        .time-input-custom::-webkit-calendar-picker-indicator { display: none !important; -webkit-appearance: none; }
+        .time-input-custom::-webkit-inner-spin-button { display: none !important; -webkit-appearance: none; }
+
+        .clock-v { font-family: 'Consolas', monospace; font-size: 1.9rem; font-weight: bold; letter-spacing: 1px; }
+        .c-eod { color: var(--success); }
+        
+        /* TIMER GENERAL Y BOTONES EN UNA SOLA FILA VERTICAL A LA DERECHA */
+        .general-timer-container {
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            gap: 15px; 
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        
+        #display-gen {
+            font-size: 2.3rem; 
+            letter-spacing: 1px;
+            text-align: center; 
+        }
+        
+        .timer-actions-col { 
+            display: flex; 
+            flex-direction: column;
+            gap: 6px; 
+            align-items: stretch;
+            min-width: 65px; 
+        }
+        
+        .btn-t-unified { 
+            padding: 6px 8px; 
+            border-radius: 6px; 
+            font-size: 0.8rem; 
+            font-weight: bold; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            transition: 0.2s;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        .btn-t-unified:active { transform: scale(0.95); }
+        .btn-t-unified.active { box-shadow: 0 0 8px currentColor; }
+        
+        .btn-reset-inactive { background: #888888; }
+        .btn-reset-active { background: var(--danger); }
+        .btn-1h { background: var(--accent); }
+        .btn-10m { background: #607d8b; }
+
+        /* TABS DE CHATS COMPACTOS */
+        #chatTabsContainer {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 8px;
+            flex-wrap: nowrap; /* Forzar 1 fila */
+        }
+
+        .chat-timer-tab-wrapper { 
+            display: flex; 
+            align-items: stretch; 
+            justify-content: center; 
+            flex: 1; 
+            border: 1px solid var(--btn-border); 
+            border-radius: 8px; 
+            overflow: hidden; 
+            transition: 0.2s;
+        }
+        .chat-timer-tab-wrapper.active { border-color: var(--accent); }
+        
+        .chat-timer-tab-wrapper .tab-btn { 
+            flex: 1; 
+            background: transparent; 
+            border: none; 
+            color: var(--text); 
+            padding: 8px; 
+            font-size: 0.8rem; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            transition: 0.2s; 
+            border-right: 1px solid var(--btn-border);
+        }
+        .chat-timer-tab-wrapper.active .tab-btn { color: var(--accent); border-right-color: var(--accent);}
+        
+        .chat-timer-btn { 
+            background: rgba(128,128,128,0.1); 
+            border: none; 
+            color: var(--text); 
+            padding: 8px; 
+            font-size: 1.1rem; /* Más grande en conteo */
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            position: relative; 
+            min-width: 65px; /* Más ancho inicial */
+            font-family: 'Consolas', monospace;
+        }
+        .chat-timer-btn:hover { background: rgba(128,128,128,0.2); color: var(--accent); }
+        .chat-timer-btn.active { background: var(--accent); color: white; box-shadow: inset 0 0 8px rgba(0,0,0,0.2); }
+        
+        .chat-timer-btn::after {
+            content: attr(data-time-preview);
+            position: absolute;
+            bottom: calc(100% + 5px);
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--text);
+            color: var(--bg);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .chat-timer-btn:hover::after { opacity: 1; visibility: visible; }
+        
+        .btn-add-chat { 
+            background: transparent; 
+            border: 1px dashed var(--text-dim); 
+            color: var(--text-dim); 
+            border-radius: 8px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            width: 35px; 
+            font-size: 1.3rem;
+            flex-shrink: 0; /* Que el boton + no se encoja */
+        }
+        .btn-add-chat:hover { background: var(--input-bg); border-color: var(--accent); color: var(--accent); }
+
+        /* REGLA DE ORO VERTICAL 502x1080 */
+        @media (max-width: 550px) {
+            .timers-row { 
+                flex-direction: row; /* Forzar fila horizontal siempre */
+                gap: 5px; /* Reducir gap en mobile para que entren */
+            }
+            .timer-card { 
+                padding: 6px; 
+                min-width: 0;
+            }
+            .dual-col-timer { gap: 5px; }
+            .clock-v { font-size: 1.4rem; }
+            #display-gen { font-size: 1.6rem; }
+            .btn-t-unified { padding: 4px; font-size: 0.75rem; }
+            .timer-actions-col { min-width: 50px; }
+            
+            #chatTabsContainer { 
+                flex-wrap: nowrap; /* Mantiene chats en una fila */
+                gap: 3px;
+            }
+            .chat-timer-tab-wrapper .tab-btn { padding: 6px 4px; font-size: 0.7rem; }
+            .chat-timer-btn { padding: 6px 4px; min-width: 50px; font-size: 0.9rem; }
+            .btn-add-chat { width: 30px; }
+        }
+
+        .f-row { display: flex; gap: var(--gap); flex-wrap: wrap;}
+        .f-field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 120px; } 
+        .f-label { font-size: 0.75rem; font-weight: bold; color: var(--text-dim); text-transform: uppercase; cursor: pointer; }
+        .f-field input, .f-field textarea { width: 100%; box-sizing: border-box; background: var(--input-bg); border: 1px solid var(--border); padding: 8px; border-radius: 6px; color: var(--text); font-family: inherit; font-size: 0.95rem;}
+        
+        .btn-add { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: 0.9rem; }
+        
+        .hist-view { padding: 12px; font-family: 'Consolas', monospace; font-size: 0.9rem; border: 1px solid var(--border); border-radius: 8px; transition: all 0.3s ease; white-space: pre-wrap; min-height: 80px; max-height: 250px; background: var(--surface); color: var(--text); overflow-y: auto; width: 100%; box-sizing: border-box;}
+        
+        .footer-actions { display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap;}
+        .btn-foot { flex: 1; padding: 10px 2px; border-radius: 8px; border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 4px; min-width: 100px;} 
+
+        /* === GESTOR DE PLANTILLAS WP === */
+        /* ALTO DINAMICO */
+        .wp-tpl-container { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; margin-bottom: 10px; height: auto; max-height: none; width: 100%; overflow: visible;}
+        .wp-search-row { display: flex; gap: 8px; align-items: center; flex-shrink: 0; flex-wrap: wrap;}
+        .wp-search-input { flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--input-bg); color: var(--text); font-size: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); min-width: 150px;}
+        .wp-search-input:focus { border-color: var(--accent); outline: none; }
+        .btn-wp-action { background: var(--accent); color: white; border: none; padding: 10px 14px; border-radius: 12px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: transform 0.1s ease, background 0.2s; display: flex; align-items: center; justify-content: center; white-space: nowrap;}
+        .btn-wp-action:hover { filter: brightness(1.1); }
+        .btn-wp-action:active { transform: scale(0.95); }
+        .btn-wp-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); font-size: 0.9rem; padding: 10px; }
+        .btn-wp-secondary:hover { border-color: var(--accent); color: var(--accent); }
+        
+        .wp-list { display: flex; flex-direction: column; gap: 12px; padding: 5px; flex: 1; overflow: visible; height: auto; max-height: none;}
+        
+        .wp-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; transition: all 0.2s ease; cursor: pointer; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.03);}
+        .wp-item:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(33,150,243,0.15);}
+        .wp-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .wp-item-title { font-size: 1rem; font-weight: bold; color: var(--accent); line-height: 1.2;}
+        .wp-item-content { font-size: 0.95rem; line-height: 1.5; color: var(--text); white-space: pre-wrap; }
+        .wp-item-copy-btn { position: absolute; bottom: 12px; right: 12px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; font-size: 0.85rem; color: var(--accent); font-weight: bold; opacity: 0; transition: 0.2s; pointer-events: none;}
+        .wp-item:hover .wp-item-copy-btn { opacity: 1; }
+        
+        /* Modal simple para editar/agregar plantillas */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 10px; box-sizing: border-box;}
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: var(--surface); padding: 20px; border-radius: 12px; border: 1px solid var(--border); width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 12px; max-height: 90vh; overflow-y: auto;}
+        .modal-title { font-size: 1.15rem; font-weight: bold; color: var(--accent); text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .modal-input { padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--input-bg); color: var(--text); font-size: 1rem; width: 100%; box-sizing: border-box; font-family: inherit; }
+        .modal-textarea { width: 100%; min-height: 150px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px; color: var(--text); box-sizing: border-box; font-family: inherit; font-size: 1rem; resize: vertical; }
+        .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px; align-items: center; flex-wrap: wrap;}
+        .modal-actions-left { flex: 1; }
+        .btn-modal { padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.95rem; border: none; }
+        .btn-modal-cancel { background: transparent; color: var(--text); border: 1px solid var(--border); }
+        .btn-modal-save { background: var(--accent); color: white; }
+        .btn-modal-delete { background: var(--danger); color: white; }
+
+        /* === PANTALLA COMPLETA MODAL === */
+        #fullscreenModal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+        #fullscreenModal.active { display: flex; }
+        #fs-title {
+            font-size: 3rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+        }
+        #fs-timer {
+            font-family: 'Consolas', monospace;
+            font-size: 15vw;
+            font-weight: bold;
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(33, 150, 243, 0.4);
+        }
+        #fs-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        #fs-close:hover {
+            background: var(--surface);
+            border-color: var(--text-dim);
+        }
+
+        /* === HERRAMIENTA 2: NOTAS === */
+        textarea { width: 100%; box-sizing: border-box; min-height: 120px; background: rgba(128,128,128,0.05); border: 1px solid var(--border); border-radius: 8px; padding: 12px; color: var(--text); font-family: inherit; font-size: 1rem; resize: vertical; }
+        .action-bar { display: flex; gap: 5px; }
+        .mini-btn { background: transparent; border: 1px solid var(--btn-border); color: var(--text); padding: 5px 10px; border-radius: 5px; font-size: 0.75rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        .mini-btn:hover { background: var(--border); }
+        .note-alert { background: rgba(33, 150, 243, 0.08); border-left: 3px solid var(--accent); padding: 12px; font-size: 0.85rem; color: var(--text-dim); border-radius: 0 8px 8px 0; }
+        .label-mini { font-size: 0.7rem; font-weight: bold; color: var(--accent); text-transform: uppercase; display: block; margin-bottom: 4px; }
+
+        /* === HERRAMIENTA 3: SOPORTE === */
+        .info-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 8px; }
+        .info-item { background: rgba(128,128,128,0.05); padding: 10px; border-radius: 8px; border: 1px solid var(--border); text-align: center; }
+        .sla-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .sla-table td { padding: 8px; border-bottom: 1px solid var(--border); }
+        .val-tabs { display: flex; gap: 5px; flex-wrap: wrap; }
+        .tab-btn { background: transparent; border: 1px solid var(--btn-border); color: var(--text); padding: 10px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        .tab-btn.active { border-color: var(--accent); color: var(--accent); border-width: 2px; }
+        .val-content { background: rgba(128,128,128,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 15px; font-size: 0.95rem; display: none; }
+        .val-content.active { display: block; }
+        .step { margin-bottom: 6px; padding-left: 15px; position: relative; }
+        .step::before { content: "-"; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+
+        /* === HERRAMIENTA 4: TIPIFICADOR === */
+        .category-title { font-size: 0.9rem; font-weight: bold; color: var(--text-dim); text-transform: uppercase; margin: 15px 0 5px 0; display: flex; align-items: center; gap: 10px; }
+        .category-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+        .grid-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+        .btn-tip { background: rgba(128,128,128,0.05); border: 1px solid var(--border); color: var(--text); padding: 12px 14px; border-radius: 8px; cursor: pointer; font-size: 1rem; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+        .cat-consulta:hover { border-color: var(--accent); background: rgba(59, 130, 246, 0.1); }
+        .cat-solicitud:hover { border-color: var(--success); background: rgba(16, 185, 129, 0.1); }
+        .cat-reclamo:hover { border-color: var(--warning); background: rgba(245, 158, 11, 0.1); }
+        .cat-incidencia:hover { border-color: var(--danger); background: rgba(239, 68, 68, 0.1); }
+
+        /* === HERRAMIENTA 5: CALCULADORA === */
+        .f-col { display: flex; flex-direction: column; gap: 5px; flex: 1; }
+        label { font-size: 0.8rem; font-weight: bold; color: var(--text-dim); text-transform: uppercase; }
+        .f-col input, .f-col select { padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--input-bg); color: var(--text); font-size: 1rem; width: 100%; box-sizing: border-box; font-family: inherit; transition: border-color 0.2s; }
+        .f-col input[type="number"] { font-family: 'Consolas', monospace; font-weight: bold; }
+        .f-col input:focus, .f-col select:focus { border-color: var(--accent); }
+        select option { background: var(--bg); color: var(--text); }
+        .checkbox-container { display: flex; align-items: center; gap: 8px; background: rgba(128,128,128,0.05); padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; user-select: none; margin-top: 2px; width: 100%; box-sizing: border-box;}
+        .checkbox-container input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent); }
+        .checkbox-container span { font-size: 0.9rem; font-weight: bold; color: var(--text); }
+        .results-box { background: rgba(128,128,128,0.05); border: 1px solid var(--border); border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 12px; border-left: 4px solid var(--success); width: 100%; box-sizing: border-box;}
+        .result-item { display: flex; justify-content: space-between; align-items: center; font-size: 1rem; }
+        .val-desc { font-weight: bold; color: var(--text); font-family: 'Consolas', monospace; }
+        .val-total { font-size: 1.5rem; font-weight: bold; color: var(--success); font-family: 'Consolas', monospace; }
+        .speech-container { margin-top: 5px; width: 100%; box-sizing: border-box;}
+        .speech-text { font-size: 1rem; color: var(--text); line-height: 1.6; background: rgba(59, 130, 246, 0.05); border: 1px solid var(--accent); padding: 15px; border-radius: 8px; cursor: pointer; transition: 0.2s; width: 100%; box-sizing: border-box;}
+        .speech-text:hover { border-color: var(--success); }
+        .highlight { color: var(--accent); font-weight: bold; } 
+        .btn-main { background: var(--success); color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: 0.95rem; transition: 0.2s; margin-top: 5px; width: 100%; box-sizing: border-box;}
+        body:not(.light-mode) .btn-main { color: black; }
+        .btn-main:active { transform: scale(0.98); }
+        .hidden { display: none !important; }
+
+        /* === HERRAMIENTA 6: PLANTILLAS === */
+        #botonesPlantillas { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%;}
+        .btn-plantilla { padding: 8px 14px; background-color: var(--input-bg); color: var(--text); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: 0.2s; text-transform: uppercase; }
+        .btn-plantilla:hover { border-color: var(--accent); }
+        .btn-plantilla.activo { background-color: var(--accent); color: white; border-color: var(--accent); box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
+        .btn-principal { background-color: #555 !important; color: white !important; border-color: #555 !important; }
+        .btn-principal:hover { background-color: #333 !important; border-color: #333 !important; }
+        .plantilla-titulo { font-size: 1rem; font-weight: bold; color: var(--accent); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; text-align: center; }
+        .campo-vertical { margin-bottom: 10px; width: 100%; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box;}
+        .campo-vertical label { font-size: 0.8rem; font-weight: bold; color: var(--text-dim); text-transform: uppercase; }
+        .campo-vertical input { width: 100%; box-sizing: border-box; background: var(--input-bg); border: 1px solid var(--border); padding: 8px; border-radius: 6px; color: var(--text); font-family: inherit;}
+        .campo-row { display: flex; align-items: center; margin-bottom: 8px; gap: 8px; width: 100%; box-sizing: border-box;}
+        .campo-row label { font-size: 0.8rem; font-weight: bold; color: var(--text-dim); white-space: nowrap; flex-shrink: 0; width: 75px; text-transform: uppercase; }
+        .campo-row input { width: 100%; box-sizing: border-box; background: var(--input-bg); border: 1px solid var(--border); padding: 8px; border-radius: 6px; color: var(--text); font-family: inherit;}
+        .campo-pregunta { margin-bottom: 10px; width: 100%; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box;}
+        .campo-pregunta .pregunta-label { font-size: 0.85rem; font-weight: bold; color: var(--text); line-height: 1.3; }
+        .campo-pregunta textarea { resize: none; overflow: hidden; width: 100%; box-sizing: border-box; background: var(--input-bg); border: 1px solid var(--border); padding: 8px; border-radius: 6px; color: var(--text); font-family: inherit;}
+        .campo-fijo, .texto-fijo-bloque { font-size: 0.9rem; color: var(--text); background: rgba(59, 130, 246, 0.08); border-left: 3px solid var(--accent); border-radius: 4px; padding: 8px 10px; margin-bottom: 8px; line-height: 1.4; word-break: break-word; }
+        .plantilla-sep { border: none; border-top: 1px dashed var(--border); margin: 12px 0; width: 100%;}
+        .btn-copiar { width: 100%; padding: 14px; margin-top: 10px; background-color: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.95rem; text-transform: uppercase; transition: 0.2s; box-sizing: border-box;}
+        .btn-copiar:active { transform: scale(0.98); }
+        .btn-copiar.copiado { background-color: var(--success); color: white; }
+        body:not(.light-mode) .btn-copiar.copiado { color: black; }
+        
+        #botonesRapidos { display: flex; gap: 10px; margin-top: 5px; width: 100%; box-sizing: border-box; flex-wrap: wrap;}
+        .btn-rapido { flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem; color: white; transition: 0.2s; text-transform: uppercase; min-width: 120px;}
+        .btn-rapido:active { transform: scale(0.97); }
+        .btn-rapido.solicitudes { background-color: var(--accent); }
+        .btn-rapido.solicitudes:hover { opacity: 0.9; }
+        .btn-rapido.reclamos { background-color: var(--warning); color: #000; }
+        .btn-rapido.reclamos:hover { opacity: 0.9; }
+        .btn-clear { padding: 12px; background-color: transparent; color: var(--danger); border: 1px solid var(--danger); border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem; width: 100%; text-transform: uppercase; transition: 0.2s; box-sizing: border-box;}
+        .btn-clear:hover { background-color: var(--danger); color: white; }
+        .grid-basicos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; box-sizing: border-box;}
+        @media (max-width: 400px) { .grid-basicos { grid-template-columns: 1fr; } }
+
+        /* === TOAST UNIFICADO === */
+        .toast {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            padding: 10px 25px; border-radius: 30px; font-size: 0.95rem; font-weight: bold;
+            opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 9999;
+            white-space: nowrap; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .toast.visible { opacity: 1; }
+        .toast.azul { background: var(--accent); color: white; }
+        .toast.naranja { background: var(--warning); color: #000; }
+        .toast.verde { background: var(--success); color: white; }
+        body:not(.light-mode) .toast.verde { color: black; }
+        .toast.rojo { background: var(--danger); color: white; }
+
+        /* Estilo para errores de validacion */
+        .error-border {
+            border-color: var(--danger) !important;
+            box-shadow: 0 0 5px rgba(255, 23, 68, 0.5);
+        }
+
+    </style>
+</head>
+<body class="light-mode">
+
+    <div class="toast" id="toast"></div>
+
+    <!-- PANTALLA COMPLETA MODAL -->
+    <div id="fullscreenModal">
+        <button id="fs-close" onclick="closeFullscreen()">X CERRAR</button>
+        <div id="fs-title">Entrada</div>
+        <div id="fs-timer">00:00:00</div>
+    </div>
+
+    <!-- MODAL PLANTILLAS WP -->
+    <div class="modal-overlay" id="wpModal">
+        <div class="modal-content">
+            <div class="modal-title" id="wpModalTitle">Nueva Plantilla</div>
+            <input type="hidden" id="wpModalId">
+            <div>
+                <label class="f-label">Título</label>
+                <input type="text" id="wpModalInputTitle" class="modal-input" placeholder="Ej: Saludo inicial...">
+            </div>
+            <div id="wpModalVariantsContainer" style="display:flex; flex-direction:column; gap:8px; height:auto; padding-right:5px;">
+                <!-- Las variantes se cargan dinámicamente aquí -->
+            </div>
+            <button type="button" onclick="document.getElementById('wpModalVariantsContainer').insertAdjacentHTML('beforeend', createVariantInputHTML())" style="background:transparent; border:1px dashed var(--accent); color:var(--accent); padding:8px; border-radius:8px; cursor:pointer; font-size:0.9rem; font-weight:bold; margin-top:5px;">+ Añadir variante</button>
+            <div class="modal-actions">
+                <div class="modal-actions-left">
+                     <button id="btnModalDeleteTemplate" type="button" class="btn-modal btn-modal-delete" style="display:none;" onclick="deleteCurrentWpTemplate()">Eliminar</button>
+                </div>
+                <button class="btn-modal btn-modal-cancel" onclick="closeWpModal()">Cancelar</button>
+                <button class="btn-modal btn-modal-save" onclick="saveWpTemplate()">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pestañas de navegación -->
+    <nav class="nav-bubbles">
+        <div class="bubble active" data-title="Dashboard" data-index="1" onclick="switchTool('dashboard', this)">1</div>
+        <div class="bubble" data-title="Plantillas de WSP" data-index="2" onclick="switchTool('wp-plantillas', this)">2</div>
+        <div class="bubble" data-title="Notas" data-index="3" onclick="switchTool('notas', this)">3</div>
+        <div class="bubble" data-title="Soporte" data-index="4" onclick="switchTool('soporte', this)">4</div>
+        <div class="bubble" data-title="Tipificador" data-index="5" onclick="switchTool('tipificador', this)">5</div>
+        <div class="bubble" data-title="Calculadora" data-index="6" onclick="switchTool('calculadora', this)">6</div>
+        <div class="bubble" data-title="Plantillas" data-index="7" onclick="switchTool('plantillas', this)">7</div>
+    </nav>
+
+    <!-- HERRAMIENTA 1: DASHBOARD -->
+    <section id="tool-dashboard" class="tool-container active">
+        <div class="dashboard-wrapper">
+            <div class="timers-row">
+                <div class="timer-card">
+                    <!-- Botón para ver en pantalla completa el timer actual del carrusel -->
+                    <button class="fullscreen-btn" onclick="openFullscreenCarousel()" title="Ver en pantalla completa">
+                        <svg viewBox="0 0 24 24"><path d="M5 5h5v2H7v3H5V5zm9 0h5v5h-2V7h-3V5zm5 9h2v5h-5v-2h3v-3zm-9 3H5v-5h2v3h3v2z"/></svg>
+                    </button>
+                    
+                    <!-- NUEVA LÓGICA DE NAVEGACIÓN POR RUEDA DEL MOUSE (SCROLL) -->
+                    <div class="timer-carousel carousel-scroll-area" id="mainCarouselArea" title="Usa la rueda del mouse aquí para cambiar">
+                        <!-- Control Entrada -->
+                        <div id="countdownContainer1" class="carousel-content active" data-title="ENTRADA">
+                            <div class="dual-col-timer">
+                                <div class="timer-col-left">
+                                    <span class="label-s">Entrada</span>
+                                    <div id="entryDisplay" class="clock-v c-eod" style="color: var(--accent);">00:00:00</div>
+                                </div>
+                                <div class="timer-col-right">
+                                    <span class="time-label">Hora</span>
+                                    <input type="time" id="entryTime" class="time-input-custom" onchange="updateCountdownTarget(1)">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Control Almuerzo -->
+                        <div id="countdownContainer2" class="carousel-content" data-title="ALMUERZO">
+                            <div class="dual-col-timer">
+                                <div class="timer-col-left">
+                                    <span class="label-s">Almuerzo</span>
+                                    <div id="lunchDisplay" class="clock-v c-eod" style="color: var(--warning);">00:00:00</div>
+                                </div>
+                                <div class="timer-col-right">
+                                    <span class="time-label">Hora</span>
+                                    <input type="time" id="lunchTime" class="time-input-custom" onchange="updateCountdownTarget(2)">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Control Salida -->
+                        <div id="countdownContainer3" class="carousel-content" data-title="SALIDA">
+                            <div class="dual-col-timer">
+                                <div class="timer-col-left">
+                                    <span class="label-s">Salida</span>
+                                    <div id="eodDisplay" class="clock-v c-eod">00:00:00</div>
+                                </div>
+                                <div class="timer-col-right">
+                                    <span class="time-label">Hora</span>
+                                    <input type="time" id="eodTime" class="time-input-custom" onchange="updateCountdownTarget(3)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timer-card" style="padding: 8px 12px;">
+                    <!-- Botón para ver en pantalla completa el timer general -->
+                    <button class="fullscreen-btn" onclick="openFullscreenGeneral()" title="Ver en pantalla completa">
+                        <svg viewBox="0 0 24 24"><path d="M5 5h5v2H7v3H5V5zm9 0h5v5h-2V7h-3V5zm5 9h2v5h-5v-2h3v-3zm-9 3H5v-5h2v3h3v2z"/></svg>
+                    </button>
+                    
+                    <div class="general-timer-container">
+                        <div id="display-gen" class="clock-v" style="color: var(--accent);">00:00:00</div>
+                        <div class="timer-actions-col">
+                            <button class="btn-t-unified btn-1h" title="Almuerzo (1h)" onclick="startGenTimer(3600)">1h</button>
+                            <button class="btn-t-unified btn-10m" title="SS.HH (10m)" onclick="startGenTimer(600)">10m</button>
+                            <button id="btnStopGen" class="btn-t-unified btn-reset-inactive" onclick="stopGenTimer()" title="Resetear">Resetear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GESTIÓN DE CHATS -->
+            <div class="card" id="gestionChatsCard">
+                <h2 onclick="toggleTheme()" id="gestionChatsHeader" title="Click para cambiar el tema">Gestión de Chats</h2>
+                
+                <div class="val-tabs" id="chatTabsContainer">
+                    <div class="chat-timer-tab-wrapper active" id="tab-wrapper-1">
+                        <button id="chatTab1" class="tab-btn" onclick="showChat(1)">Chat 1</button>
+                        <button class="chat-timer-btn" id="btn-chat1" data-time-preview="05:00" onclick="toggleChatTimer(1)">5m</button>
+                    </div>
+                    <div class="chat-timer-tab-wrapper" id="tab-wrapper-2">
+                        <button id="chatTab2" class="tab-btn" onclick="showChat(2)">Chat 2</button>
+                        <button class="chat-timer-btn" id="btn-chat2" data-time-preview="05:00" onclick="toggleChatTimer(2)">5m</button>
+                    </div>
+                    <div class="chat-timer-tab-wrapper" id="tab-wrapper-3">
+                        <button id="chatTab3" class="tab-btn" onclick="showChat(3)">Chat 3</button>
+                        <button class="chat-timer-btn" id="btn-chat3" data-time-preview="05:00" onclick="toggleChatTimer(3)">5m</button>
+                    </div>
+                    <button class="btn-add-chat" onclick="addNewChat()" title="Agregar nuevo chat">+</button>
+                </div>
+
+                <div id="chatsContainer">
+                    <!-- Chat 1 -->
+                    <div id="chatContent1" class="val-content active">
+                        <div class="f-row">
+                            <div class="f-field">
+                                <label class="f-label" onclick="copiarCampo('vendedor1', this)">Vendedor *</label>
+                                <input type="text" id="vendedor1" placeholder="Nombre...">
+                            </div>
+                            <div class="f-field">
+                                <label class="f-label" onclick="copiarCampo('numDoc1', this)">DNI / RUC *</label>
+                                <input type="text" id="numDoc1" placeholder="...">
+                            </div>
+                        </div>
+                        <div class="f-row" style="margin-top: 8px;">
+                            <div class="f-field">
+                                <label class="f-label" onclick="copiarCampo('idCom1', this)">Matrícula / Código *</label>
+                                <input type="text" id="idCom1" placeholder="Código">
+                            </div>
+                            <div class="f-field">
+                                <label class="f-label" onclick="copiarCampo('ticket1', this)">Ticket</label>
+                                <input type="text" id="ticket1" placeholder="#">
+                            </div>
+                        </div>
+                        <div class="f-field" style="margin-top: 8px;">
+                            <label class="f-label" onclick="copiarCampo('motivo1', this)">Motivo *</label>
+                            <textarea id="motivo1" placeholder="Resumen de la atención..."></textarea>
+                        </div>
+                        <button class="btn-add" style="margin-top: 10px; width: 100%;" onclick="agregarHistorial(1)">Añadir al Historial</button>
+                    </div>
+
+                    <!-- Chat 2 -->
+                    <div id="chatContent2" class="val-content">
+                        <div class="f-row">
+                            <div class="f-field">
+                                <label class="f-label" onclick="copiarCampo('vendedor2', this)">Vendedor *</label>
+                                <input type="text" id="vendedor2" placeholder="Nombre...">
+                            </div>
+                            <div class="f-field">
+                                <label class="f-label" onclick="copiarCampo('numDoc2', this)">DNI / RUC *</label>
+                                <input type="text" id="numDoc2" placeholder="...">
+                            </div>
+                        </div>
+                        <div class="f-row" style="margin-top: 8px;">
+                            <div class="f-field">
+                                <label class="f-label" onclick="copiarCampo('idCom2', this)">Matrícula / Código *</label>
+                                <input type="text" id="idCom2" placeholder="Código">
+                            </div>
+                            <div class="f-field">
+                                <label class="f-label" onclick="copiarCampo('ticket2', this)">Ticket</label>
+                                <input type="text" id="ticket2" placeholder="#">
+                            </div>
+                        </div>
+                        <div class="f-field" style="margin-top: 8px;">
+                            <label class="f-label" onclick="copiarCampo('motivo2', this)">Motivo *</label>
+                            <textarea id="motivo2" placeholder="Resumen de la atención..."></textarea>
+                        </div>
+                        <button class="btn-add" style="margin-top: 10px; width: 100%;" onclick="agregarHistorial(2)">Añadir al Historial</button>
+                    </div>
+
+                    <!-- Chat 3 -->
+                    <div id="chatContent3" class="val-content">
+                        <div class="f-row">
+                            <div class="f-field">
+                                <label class="f-label" onclick="copiarCampo('vendedor3', this)">Vendedor *</label>
+                                <input type="text" id="vendedor3" placeholder="Nombre...">
+                            </div>
+                            <div class="f-field">
+                                <label class="f-label" onclick="copiarCampo('numDoc3', this)">DNI / RUC *</label>
+                                <input type="text" id="numDoc3" placeholder="...">
+                            </div>
+                        </div>
+                        <div class="f-row" style="margin-top: 8px;">
+                            <div class="f-field">
+                                <label class="f-label" onclick="copiarCampo('idCom3', this)">Matrícula / Código *</label>
+                                <input type="text" id="idCom3" placeholder="Código">
+                            </div>
+                            <div class="f-field">
+                                <label class="f-label" onclick="copiarCampo('ticket3', this)">Ticket</label>
+                                <input type="text" id="ticket3" placeholder="#">
+                            </div>
+                        </div>
+                        <div class="f-field" style="margin-top: 8px;">
+                            <label class="f-label" onclick="copiarCampo('motivo3', this)">Motivo *</label>
+                            <textarea id="motivo3" placeholder="Resumen de la atención..."></textarea>
+                        </div>
+                        <button class="btn-add" style="margin-top: 10px; width: 100%;" onclick="agregarHistorial(3)">Añadir al Historial</button>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
+                    <span class="label-s">Historial del día</span>
+                    <span id="counterLabel" style="font-size: 0.75rem; font-weight: bold;">TOTAL: 0</span>
+                </div>
+                <div id="historyBox" class="hist-view" style="display: block; margin-top: 8px;"></div>
+                
+                <div class="footer-actions" style="margin-top: 8px;">
+                    <button class="btn-foot" style="background:var(--success); color:#fff;" onclick="copiarHistorial()">Copiar todo</button>
+                    <button id="btnEditHist" class="btn-foot" style="background:var(--accent); color:#fff;" onclick="editarHistorial()">Editar</button>
+                    <button class="btn-foot" style="background:var(--warning); color:#000;" onclick="descargarHistorial()">Exportar .txt</button>
+                    <button class="btn-foot" style="background:var(--danger); color:#fff;" onclick="limpiarTodoHist()">Limpiar historial</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HERRAMIENTA 2: GESTOR DE PLANTILLAS WHATSAPP -->
+    <section id="tool-wp-plantillas" class="tool-container">
+        <div class="card" id="wpPlantillasCard">
+            <h2>Plantillas de WSP</h2>
+            
+            <div class="wp-tpl-container">
+                <div class="wp-search-row">
+                    <input type="text" id="wpSearchInput" class="wp-search-input" placeholder="Buscar plantilla..." oninput="filterWpTemplates()">
+                    <button class="btn-wp-action" onclick="openWpModal()">+ Nueva</button>
+                    <button class="btn-wp-action btn-wp-secondary" onclick="exportWpTemplates()" title="Exportar JSON">Exportar</button>
+                    <input type="file" id="wpImportFile" style="display:none" accept=".json" onchange="importWpTemplates(event)">
+                    <button class="btn-wp-action btn-wp-secondary" onclick="document.getElementById('wpImportFile').click()" title="Importar JSON">Importar</button>
+                </div>
+                <div class="wp-list" id="wpTemplateList">
+                    <!-- Las plantillas se renderizan aquí -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HERRAMIENTA 3: NOTAS -->
+    <section id="tool-notas" class="tool-container">
+        <div class="card">
+            <h2 onclick="toggleTheme()" title="Cambiar a Modo Claro/Oscuro">Editor de Gestión</h2>
+            <div class="cismo-label">Asistente de Redacción y Ortografía</div>
+        </div>
+        <div class="card" style="border-left: 4px solid var(--danger);">
+            <div class="note-header" style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                <span class="label-mini" style="color: var(--danger); font-size:0.75rem; font-weight:bold;">IMPORTANTE / PRIORIDAD</span>
+                <div class="action-bar">
+                    <button class="mini-btn" onclick="copyNote('imp')">Copiar</button>
+                    <button class="mini-btn" onclick="clearNote('imp')">Limpiar</button>
+                </div>
+            </div>
+            <textarea id="note-imp" spellcheck="true" placeholder="Escribe aquí los pendientes críticos..."></textarea>
+        </div>
+        <div class="card" style="border-left: 4px solid var(--success);">
+            <div class="note-header" style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                <span class="label-mini" style="color: var(--success); font-size:0.75rem; font-weight:bold;">NOTAS BÁSICAS / PLANTILLAS</span>
+                <div class="action-bar">
+                    <button class="mini-btn" onclick="copyNote('bas')">Copiar</button>
+                    <button class="mini-btn" onclick="clearNote('bas')">Limpiar</button>
+                </div>
+            </div>
+            <textarea id="note-bas" spellcheck="true" placeholder="Anotaciones rápidas o textos frecuentes..."></textarea>
+        </div>
+        <div class="note-alert">
+            <b>REGLA DE REDACCIÓN:</b> El corrector ortográfico está activo. Revisa las palabras subrayadas en rojo.
+        </div>
+    </section>
+
+    <!-- HERRAMIENTA 4: SOPORTE -->
+    <section id="tool-soporte" class="tool-container">
+        <div class="card">
+            <h2 onclick="toggleTheme()" title="Cambiar a Modo Claro/Oscuro">Directorio Culqi</h2>
+            <div class="cismo-label">COMPAÑIA INCUBADORA DE SOLUCIONES MOVILES S.A. - CISMO S.A.</div>
+            <div class="info-grid" style="margin-top: 5px;">
+                <div class="info-item">
+                    <span class="label-mini">WhatsApp Culqi</span>
+                    <b style="color:var(--success)">946 365 851</b>
+                </div>
+                <div class="info-item">
+                    <span class="label-mini">Telemarketing</span>
+                    <b style="color:var(--text)">01 2002440</b>
+                </div>
+            </div>
+            <div class="info-item">
+                <span class="label-mini">Horario Telemarketing</span>
+                <span style="font-weight: 500; font-size:0.9rem;">LUN-VIE: 10:15 - 17:00 | SAB: 09:00 - 14:00</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="border-color: var(--warning)">Información Operativa</h2>
+            
+            <div class="note-alert" style="margin-bottom: 8px;">
+                <span class="label-mini" style="color: var(--accent); margin-bottom: 2px;">KAM</span>
+                Queremos informarte que tienes un gerente de cuentas, le brindo el numero de contacto para una atención personalizada.
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label-mini">DAE</span>
+                    <b style="font-size: 0.9rem;">VISA Y MASTERCARD</b>
+                </div>
+                <div class="info-item">
+                    <span class="label-mini">Factura</span>
+                    <b style="font-size: 0.9rem;">Amex, Diners, P.E y QR</b>
+                </div>
+            </div>
+
+            <div class="info-item" style="text-align: left; margin-top: 8px;">
+                <span class="label-mini">Códigos de Transacción</span>
+                <ul style="padding-left: 20px; margin-top: 5px; font-size: 0.9rem; color: var(--text-dim); line-height: 1.5;">
+                    <li><b>f002</b> transacciones</li>
+                    <li><b>f004</b> ventas</li>
+                    <li><b>f007</b> membresia</li>
+                    <li><b>f005</b> contometros</li>
+                    <li><b>f001</b> DAE</li>
+                </ul>
+            </div>
+
+            <div class="info-grid" style="margin-top: 8px;">
+                <div class="info-item" style="text-align: left;">
+                    <span class="label-mini">RED POS</span>
+                    <ul style="padding-left: 15px; margin-top: 5px; font-size: 0.85rem; color: var(--text-dim); line-height: 1.5;">
+                        <li><b>CARTERIZADO:</b><br>Lima 12H / Prov 24H</li>
+                        <li style="margin-top: 6px;"><b>NO CARTERIZADO:</b><br>Lima 24H / Prov 48H</li>
+                    </ul>
+                </div>
+                <div class="info-item" style="text-align: left;">
+                    <span class="label-mini">Logística Contometros</span>
+                    <ul style="padding-left: 15px; margin-top: 5px; font-size: 0.85rem; color: var(--text-dim); line-height: 1.5;">
+                        <li><b>Lima:</b> 3-5 días H</li>
+                        <li><b>Prov:</b> 5-8 días H</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-grid" style="margin-top: 8px;">
+                <div class="info-item">
+                    <span class="label-mini">Movistar</span>
+                    <span style="font-family: monospace; font-size: 0.9rem; color: var(--text); font-weight: bold;">VD_LBB_CULQI</span>
+                </div>
+                <div class="info-item">
+                    <span class="label-mini">Claro</span>
+                    <span style="font-family: monospace; font-size: 0.9rem; color: var(--text); font-weight: bold;">VD_LBX_CULQI</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="border-color: var(--success)">Tiempos de Respuesta</h2>
+            <table class="sla-table">
+                <tr><td>Consultas</td><td style="text-align:right; font-weight:bold; color:var(--success)">24 hrs hábiles</td></tr>
+                <tr><td>Solicitudes</td><td style="text-align:right; font-weight:bold; color:var(--success)">48 hrs hábiles</td></tr>
+                <tr><td>Incidente Técnico</td><td style="text-align:right; font-weight:bold; color:var(--success)">48 hrs hábiles</td></tr>
+                <tr><td>Reclamos</td><td style="text-align:right; font-weight:bold; color:var(--success)">72 hrs hábiles</td></tr>
+            </table>
+        </div>
+        <div class="card">
+            <h2>Protocolos de Validación</h2>
+            <div class="val-tabs">
+                <button id="t1" class="tab-btn active" onclick="showVal(1)">Nivel 1</button>
+                <button id="t2" class="tab-btn" onclick="showVal(2)">Nivel 2</button>
+                <button id="t3" class="tab-btn" onclick="showVal(3)">Excepciones</button>
+            </div>
+            <div id="v1" class="val-content active">
+                <div style="color: var(--accent); font-weight: bold; margin-bottom: 8px;">CAMBIO CONFIGURACIÓN COMERCIO</div>
+                <div class="step"><b>Razón Social</b> (Si tiene +1 ID, pedir Nombre Comercial).</div>
+                <div class="step"><b>RUC / DNI</b>.</div>
+                <div class="step">Foto selfie con y del <b>DNI</b>.</div>
+                <div class="step">Nombre del <b>Banco</b> (Abonos).</div>
+                <div class="step"><b>Filtro:</b> ¿Fecha y monto de última venta o abono?</div>
+            </div>
+            <div id="v2" class="val-content">
+                <div style="color: var(--accent); font-weight: bold; margin-bottom: 8px;">VALIDACIÓN ESTÁNDAR</div>
+                <div class="step"><b>Razón Social</b> (Nombre comercial solo si tiene +1 ID).</div>
+                <div class="step"><b>RUC / DNI</b>.</div>
+                <div class="step"><b>Correo Electrónico</b> (Admin Panel o Usuarios CulqiPanel).</div>
+            </div>
+            <div id="v3" class="val-content">
+                <div style="color: var(--success); font-weight: bold; margin-bottom: 8px;">CASOS QUE NO APLICAN VALIDACIÓN</div>
+                <div class="step">Seguimiento de ticket.</div>
+                <div class="step">Incidencias técnicas.</div>
+                <div class="step">Capacitaciones / Tipificaciones diversas.</div>
+            </div>
+            <div class="note-alert" style="border-left-color: var(--danger); background: rgba(255,23,68,0.08); color: var(--danger)">
+                <b>REGLA DE ORO:</b> Si el comercio no recuerda alguna información, solicitar <b>FOTO SELFIE</b>.
+            </div>
+        </div>
+    </section>
+
+    <!-- HERRAMIENTA 5: TIPIFICADOR -->
+    <section id="tool-tipificador" class="tool-container">
+        <div class="card">
+            <h2 onclick="toggleTheme()" title="Cambiar a Modo Claro/Oscuro">Tipificación Rápida</h2>
+            <div class="cismo-label">Copiado con un solo click</div>
+
+            <div class="category-title">Consultas</div>
+            <div class="grid-buttons">
+                <button class="btn-tip cat-consulta" onclick="copyTip('Comercio consulta por sus abonos. Se brinda información detallada según sistema.')">
+                    <b>Consulta abono</b>
+                </button>
+                <button class="btn-tip cat-consulta" onclick="copyTip('Comercio consulta por sus transacciones. Se valida estado en plataforma.')">
+                    <b>Consulta transacciones</b>
+                </button>
+                <button class="btn-tip cat-consulta" onclick="copyTip('Comercio consulta por su ticket. Se brinda estado actual del requerimiento.')">
+                    <b>Consulta estado de ticket</b>
+                </button>
+                <button class="btn-tip cat-consulta" onclick="copyTip('Comercio consulta por comisiones. Se procede a explicar el desglose de tasas vigentes.')">
+                    <b>Consulta comisiones</b>
+                </button>
+            </div>
+
+            <div class="category-title">Solicitudes</div>
+            <div class="grid-buttons">
+                <button class="btn-tip cat-solicitud" onclick="copyTip('Comercio solicita cambiar correo electrónico.')">
+                    <b>Solicitar cambiar correo</b>
+                </button>
+                <button class="btn-tip cat-solicitud" onclick="copyTip('Comercio solicita cambiar cuenta de banco.')">
+                    <b>Solicita cambiar cta de banco</b>
+                </button>
+                <button class="btn-tip cat-solicitud" onclick="copyTip('Comercio solicita contómetros. Se envía link de pago.')">
+                    <b>Solicita comprar contómetros</b>
+                </button>
+                <button class="btn-tip cat-solicitud" onclick="copyTip('Comercio solicita contómetros. Se genera solicitud de contómetros gratuitos.')">
+                    <b>Solicita contómetros gratuitos</b>
+                </button>
+                <button class="btn-tip cat-solicitud" onclick="copyTip('Comercio solicita comprobante. Se envía comprobante.')">
+                    <b>Solicita comprobante</b>
+                </button>
+            </div>
+
+            <div class="category-title">Reclamos / Incidencias</div>
+            <div class="grid-buttons">
+                <button class="btn-tip cat-reclamo" onclick="copyTip('Comercio reclama por no haber recibido su abono. Se ingresa reclamo por medio de ticket.')">
+                    <b>Reclamo por abono no realizado</b>
+                </button>
+                <button class="btn-tip cat-incidencia" onclick="copyTip('Comercio solicita visita técnica. Se genera reporte por falla de terminal.')">
+                    <b>Incidente con visita</b>
+                </button>
+                <button class="btn-tip cat-incidencia" onclick="copyTip('Comercio corta llamada de forma imprevista. Se finaliza gestión.')">
+                    <b>Corta llamada</b>
+                </button>
+                <button class="btn-tip cat-incidencia" onclick="copyTip('Se libera llamada de comercio por no responder al contacto (Llamada silenciosa).')">
+                    <b>Liberación de llamada</b>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- HERRAMIENTA 6: CALCULADORA -->
+    <section id="tool-calculadora" class="tool-container">
+        <div class="card">
+            <h2 onclick="toggleTheme()" title="Cambiar a Modo Claro/Oscuro">Calculadora de Comisión</h2>
+            
+            <div class="f-row">
+                <div class="f-col">
+                    <label>Monto Base (S/)</label>
+                    <input type="number" id="monto" placeholder="Ej: 1000" oninput="calcular()">
+                </div>
+
+                <div class="f-col">
+                    <label>Porcentaje</label>
+                    <select id="comisionSel" onchange="toggleOtro()">
+                        <option value="2.99">2.99%</option>
+                        <option value="3.44">3.44%</option>
+                        <option value="3.99">3.99%</option>
+                        <option value="otro">Otro (Personalizado)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="otroGrupo" class="f-col hidden">
+                <label>Ingrese el %</label>
+                <input type="number" id="otroValor" placeholder="Ej: 5" oninput="calcular()">
+            </div>
+
+            <label class="checkbox-container">
+                <input type="checkbox" id="incluirIgv" checked onchange="calcular()">
+                <span>Incluir IGV (18% sobre comisión)</span>
+            </label>
+
+            <div class="results-box">
+                <div class="result-item">
+                    <span class="f-label">Comisión:</span>
+                    <span class="val-desc" id="resComision">S/ 0.00</span>
+                </div>
+                <div class="result-item">
+                    <span class="f-label">IGV (18% sobre com.):</span>
+                    <span class="val-desc" id="resIgv">S/ 0.00</span>
+                </div>
+                <div class="result-item">
+                    <span class="f-label">Total Descontado:</span>
+                    <span class="val-desc" style="color:var(--danger)" id="resDescuento">- S/ 0.00</span>
+                </div>
+                <div class="result-item" style="border-top: 1px dashed var(--border); padding-top: 12px; margin-top: 5px;">
+                    <span class="f-label">Monto que sobra:</span>
+                    <span class="val-total" id="resSobra">S/ 0.00</span>
+                </div>
+            </div>
+
+            <div class="speech-container">
+                <label style="margin-bottom: 8px; display: block; color: var(--accent);">Explicación Detallada</label>
+                <div id="speechText" class="speech-text" onclick="copiarSpeechCalc()">Ingrese un monto y porcentaje para generar la explicación...</div>
+            </div>
+
+            <button class="btn-main" onclick="copiarSpeechCalc()">Copiar Explicación</button>
+        </div>
+    </section>
+
+    <!-- HERRAMIENTA 7: PLANTILLAS -->
+    <section id="tool-plantillas" class="tool-container">
+        <div class="card">
+            <h2 onclick="toggleTheme()" title="Clic para cambiar tema">Plantillas By L.</h2>
+            
+            <div id="botonesPlantillas">
+                <button class="btn-plantilla btn-principal" onclick="irPrincipal()">Principal</button>
+                <button class="btn-plantilla" onclick="togglePlantilla('cbancaria', this)">C.Bancaria</button>
+                <button class="btn-plantilla" onclick="togglePlantilla('redpos', this)">RedPOS</button>
+                <button class="btn-plantilla" onclick="togglePlantilla('contometros', this)">Compra Contometros</button>
+                <button class="btn-plantilla" onclick="togglePlantilla('gratis_contometros', this)">Gratis Contometros</button>
+                <button class="btn-plantilla" onclick="togglePlantilla('correo', this)">Correo</button>
+                <button class="btn-plantilla" onclick="togglePlantilla('cabono', this)">C.Abono</button>
+            </div>
+        </div>
+
+        <div id="seccionPlantilla" class="card" style="display:none; border: 2px solid var(--accent); background: rgba(59, 130, 246, 0.02);">
+            <div class="plantilla-titulo" id="plantillaTitulo"></div>
+            <div id="camposPlantilla"></div>
+            <button class="btn-copiar" id="btnCopiar" onclick="copiarPlantilla()">Copiar Plantilla</button>
+        </div>
+
+        <div class="card" id="camposBasicosContainer">
+            <div class="plantilla-titulo" style="text-align: center; color: var(--text);">Datos del Comercio</div>
+            <div style="text-align: center; font-size: 0.8rem; color: var(--success); margin-bottom: 10px;">
+                Puedes pegar el texto de información directamente en cualquier campo para auto-rellenar.
+            </div>
+            
+            <div id="camposBasicos" class="grid-basicos">
+                <div class="campo-vertical">
+                    <label>RUC</label>
+                    <input type="text" id="b_ruc" placeholder="RUC">
+                </div>
+                <div class="campo-vertical">
+                    <label>ID</label>
+                    <input type="text" id="b_id" placeholder="ID">
+                </div>
+                <div class="campo-vertical">
+                    <label>Nombre</label>
+                    <input type="text" id="b_nombre" placeholder="Nombre">
+                </div>
+                <div class="campo-vertical">
+                    <label>Correo</label>
+                    <input type="text" id="b_correo" placeholder="Correo">
+                </div>
+                <div class="campo-vertical">
+                    <label>Teléfono</label>
+                    <input type="text" id="b_telefono" placeholder="Telefono">
+                </div>
+                <div class="campo-vertical">
+                    <label>Terminal</label>
+                    <input type="text" id="b_terminal" placeholder="Terminal">
+                </div>
+            </div>
+
+            <div id="botonesRapidos">
+                <button class="btn-rapido solicitudes" onclick="copiarSolicitud()">SOLICITUDES</button>
+                <button class="btn-rapido reclamos" onclick="copiarReclamo()">RECLAMOS</button>
+            </div>
+        </div>
+
+        <div class="card" style="padding: 15px;">
+            <button class="btn-clear" onclick="limpiarTodoPlantillas()">LIMPIAR TODO</button>
+        </div>
+    </section>
+
+    <script>
+        // === GESTIÓN GLOBAL (Tema, Toast, Navegación) ===
+        function toggleTheme() { 
+            document.body.classList.toggle('light-mode'); 
+            localStorage.setItem('unified-theme', document.body.classList.contains('light-mode') ? 'light' : 'dark'); 
+        }
+        
+        if (localStorage.getItem('unified-theme') === 'light' || 
+            localStorage.getItem('master-suite-theme') === 'light' || 
+            localStorage.getItem('c-theme') === 'light' || 
+            localStorage.getItem('plantillas_l_theme') === 'light') {
+            document.body.classList.add('light-mode');
+        } else {
+            document.body.classList.add('light-mode');
+        }
+
+        function switchTool(toolId, btn) {
+            document.querySelectorAll('.tool-container').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.bubble').forEach(b => b.classList.remove('active'));
+            document.getElementById('tool-' + toolId).classList.add('active');
+            if(btn) btn.classList.add('active');
+        }
+
+        function showToast(msg, colorType = 'verde') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = 'toast visible ' + colorType;
+            setTimeout(() => {
+                t.className = 'toast';
+            }, 2000);
+        }
+
+        // === PANTALLA COMPLETA ===
+        let currentFullscreenSource = null;
+        let fullscreenUpdateInterval = null;
+
+        function openFullscreenCarousel() {
+            const activeCarousel = document.querySelector('.carousel-content.active');
+            if (!activeCarousel) return;
+            
+            const title = activeCarousel.getAttribute('data-title');
+            let displayElementId = '';
+            
+            if (activeCarousel.id === 'countdownContainer1') displayElementId = 'entryDisplay';
+            else if (activeCarousel.id === 'countdownContainer2') displayElementId = 'lunchDisplay';
+            else if (activeCarousel.id === 'countdownContainer3') displayElementId = 'eodDisplay';
+            
+            currentFullscreenSource = document.getElementById(displayElementId);
+            
+            const fsModal = document.getElementById('fullscreenModal');
+            const fsTitle = document.getElementById('fs-title');
+            
+            fsTitle.innerText = title;
+            fsModal.classList.add('active');
+            
+            updateFullscreenTime();
+            fullscreenUpdateInterval = setInterval(updateFullscreenTime, 1000);
+        }
+
+        function openFullscreenGeneral() {
+            currentFullscreenSource = document.getElementById('display-gen');
+            
+            const fsModal = document.getElementById('fullscreenModal');
+            const fsTitle = document.getElementById('fs-title');
+            
+            fsTitle.innerText = 'TEMPORIZADOR';
+            fsModal.classList.add('active');
+            
+            updateFullscreenTime();
+            fullscreenUpdateInterval = setInterval(updateFullscreenTime, 500);
+        }
+
+        function updateFullscreenTime() {
+            if (currentFullscreenSource) {
+                const fsTimer = document.getElementById('fs-timer');
+                fsTimer.innerText = currentFullscreenSource.innerText;
+                fsTimer.style.color = currentFullscreenSource.style.color;
+            }
+        }
+
+        function closeFullscreen() {
+            document.getElementById('fullscreenModal').classList.remove('active');
+            if (fullscreenUpdateInterval) {
+                clearInterval(fullscreenUpdateInterval);
+                fullscreenUpdateInterval = null;
+            }
+            currentFullscreenSource = null;
+        }
+
+
+        // === LÓGICA DASHBOARD Y SCROLL MOUSE ===
+        let currentCountdownIndex = 1;
+        
+        // Manejador del evento wheel (rueda del ratón) para cambiar el carrusel
+        document.addEventListener('DOMContentLoaded', () => {
+            const carouselArea = document.getElementById('mainCarouselArea');
+            if(carouselArea) {
+                carouselArea.addEventListener('wheel', function(e) {
+                    e.preventDefault(); // Evitar scroll de la pagina si esta en el area
+                    if (e.deltaY > 0) {
+                        // Scroll hacia abajo
+                        rotateCountdown(1);
+                    } else if (e.deltaY < 0) {
+                        // Scroll hacia arriba
+                        rotateCountdown(-1);
+                    }
+                }, { passive: false });
+            }
+        });
+
+        function rotateCountdown(dir) {
+            document.getElementById(`countdownContainer${currentCountdownIndex}`).classList.remove('active');
+            currentCountdownIndex += dir;
+            if (currentCountdownIndex > 3) currentCountdownIndex = 1;
+            if (currentCountdownIndex < 1) currentCountdownIndex = 3;
+            document.getElementById(`countdownContainer${currentCountdownIndex}`).classList.add('active');
+        }
+
+        function updateCountdownTarget(id) {
+            if(id === 1) localStorage.setItem('c-entry', document.getElementById('entryTime').value);
+            else if(id === 2) localStorage.setItem('c-lunch', document.getElementById('lunchTime').value);
+            else localStorage.setItem('c-eod', document.getElementById('eodTime').value);
+            actualizarTodosLosContadores();
+        }
+
+        function actualizarTodosLosContadores() {
+            const now = new Date();
+            const valEntry = document.getElementById('entryTime').value;
+            if (!valEntry || valEntry === "00:00") { entryDisplay.innerText = "00:00:00"; entryDisplay.style.color = "var(--text-dim)"; } 
+            else { entryDisplay.innerText = calcularDiferenciaTiempo(valEntry, now); entryDisplay.style.color = "var(--accent)"; }
+
+            const valLunch = document.getElementById('lunchTime').value;
+            if (!valLunch || valLunch === "00:00") { lunchDisplay.innerText = "00:00:00"; lunchDisplay.style.color = "var(--text-dim)"; } 
+            else { lunchDisplay.innerText = calcularDiferenciaTiempo(valLunch, now); lunchDisplay.style.color = "var(--warning)"; }
+
+            const valEod = document.getElementById('eodTime').value;
+            if (!valEod || valEod === "00:00") { eodDisplay.innerText = "00:00:00"; eodDisplay.style.color = "var(--text-dim)"; } 
+            else { eodDisplay.innerText = calcularDiferenciaTiempo(valEod, now); eodDisplay.style.color = "var(--success)"; }
+        }
+
+        function calcularDiferenciaTiempo(timeVal, now) {
+            const [hours, minutes] = timeVal.split(':');
+            let target = new Date();
+            target.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+            if (target < now) target.setDate(target.getDate() + 1);
+            let diff = target - now;
+            const h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
+            return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        }
+
+        /* === NUEVA LÓGICA DE MULTI-TIMERS === */
+        const alertSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+        
+        let genTimerInterval;
+        function startGenTimer(s) {
+            clearInterval(genTimerInterval);
+            const btnReset = document.getElementById('btnStopGen');
+            btnReset.classList.remove('btn-reset-inactive');
+            btnReset.classList.add('btn-reset-active');
+            
+            const updateView = (secs) => {
+                const hh = Math.floor(secs/3600), mm = Math.floor((secs%3600)/60), ss = secs%60;
+                document.getElementById('display-gen').innerText = `${hh.toString().padStart(2,'0')}:${mm.toString().padStart(2,'0')}:${ss.toString().padStart(2,'0')}`;
+            };
+            updateView(s);
+            const then = Date.now() + s * 1000;
+            genTimerInterval = setInterval(() => {
+                const left = Math.round((then - Date.now()) / 1000);
+                if (left < 0) { 
+                    clearInterval(genTimerInterval); 
+                    updateView(0); 
+                    alertSound.play(); 
+                    alert("¡Tiempo General finalizado!");
+                    stopGenTimer();
+                    return; 
+                }
+                updateView(left);
+            }, 1000);
+        }
+        function stopGenTimer() { 
+            clearInterval(genTimerInterval); 
+            document.getElementById('display-gen').innerText = "00:00:00"; 
+            const btnReset = document.getElementById('btnStopGen');
+            btnReset.classList.remove('btn-reset-active');
+            btnReset.classList.add('btn-reset-inactive');
+        }
+
+        let chatCount = 3;
+        let chatTimers = { 1: null, 2: null, 3: null };
+
+        function toggleChatTimer(chatId) {
+            const btn = document.getElementById(`btn-chat${chatId}`);
+            const tabWrapper = document.getElementById(`tab-wrapper-${chatId}`);
+            
+            if (chatTimers[chatId] && chatTimers[chatId].interval) {
+                // Pausar o resetear
+                clearInterval(chatTimers[chatId].interval);
+                btn.classList.remove('active');
+                btn.innerText = "5m";
+                btn.setAttribute('data-time-preview', "05:00");
+                chatTimers[chatId].interval = null;
+                chatTimers[chatId].timeLeft = 300; 
+            } else {
+                // Iniciar
+                let timeLeft = 300; 
+                
+                if(chatTimers[chatId] && chatTimers[chatId].timeLeft) {
+                    timeLeft = chatTimers[chatId].timeLeft;
+                }
+                
+                btn.classList.add('active');
+                
+                const endTime = Date.now() + (timeLeft * 1000);
+                
+                if(!chatTimers[chatId]) chatTimers[chatId] = {};
+                chatTimers[chatId].endTime = endTime;
+                
+                updateBtnView(btn, timeLeft);
+                
+                chatTimers[chatId].interval = setInterval(() => {
+                    const currentLeft = Math.round((endTime - Date.now()) / 1000);
+                    
+                    if (currentLeft < 0) {
+                        clearInterval(chatTimers[chatId].interval);
+                        btn.classList.remove('active');
+                        btn.innerText = "5m";
+                        btn.setAttribute('data-time-preview', "00:00");
+                        chatTimers[chatId].timeLeft = 300;
+                        alertSound.play();
+                        alert(`¡Retomar Chat ${chatId}!`);
+                        return;
+                    }
+                    
+                    updateBtnView(btn, currentLeft);
+                    chatTimers[chatId].timeLeft = currentLeft;
+                    
+                }, 1000);
+            }
+        }
+        
+        function updateBtnView(btn, currentLeft) {
+            const mm = Math.floor(currentLeft / 60);
+            const ss = currentLeft % 60;
+            const formatted = `${mm.toString().padStart(2,'0')}:${ss.toString().padStart(2,'0')}`;
+            btn.setAttribute('data-time-preview', formatted);
+            btn.innerText = `${mm}:${ss.toString().padStart(2,'0')}`;
+        }
+        
+        function addNewChat() {
+            chatCount++;
+            const newId = chatCount;
+            
+            const tabsContainer = document.getElementById('chatTabsContainer');
+            const addBtn = tabsContainer.querySelector('.btn-add-chat');
+            
+            const tabWrapper = document.createElement('div');
+            tabWrapper.className = 'chat-timer-tab-wrapper';
+            tabWrapper.id = `tab-wrapper-${newId}`;
+            
+            const tabBtn = document.createElement('button');
+            tabBtn.id = `chatTab${newId}`;
+            tabBtn.className = 'tab-btn';
+            tabBtn.innerText = `Chat ${newId}`;
+            tabBtn.onclick = () => showChat(newId);
+            
+            const timerBtn = document.createElement('button');
+            timerBtn.id = `btn-chat${newId}`;
+            timerBtn.className = 'chat-timer-btn';
+            timerBtn.setAttribute('data-time-preview', '05:00');
+            timerBtn.innerText = '5m';
+            timerBtn.onclick = () => toggleChatTimer(newId);
+            
+            tabWrapper.appendChild(tabBtn);
+            tabWrapper.appendChild(timerBtn);
+            
+            tabsContainer.insertBefore(tabWrapper, addBtn);
+            
+            const contentContainer = document.getElementById('chatsContainer');
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.id = `chatContent${newId}`;
+            contentDiv.className = 'val-content';
+            
+            contentDiv.innerHTML = `
+                <div class="f-row">
+                    <div class="f-field">
+                        <label class="f-label" onclick="copiarCampo('vendedor${newId}', this)">Vendedor *</label>
+                        <input type="text" id="vendedor${newId}" placeholder="Nombre...">
+                    </div>
+                    <div class="f-field">
+                        <label class="f-label" onclick="copiarCampo('numDoc${newId}', this)">DNI / RUC *</label>
+                        <input type="text" id="numDoc${newId}" placeholder="...">
+                    </div>
+                </div>
+                <div class="f-row" style="margin-top: 8px;">
+                    <div class="f-field">
+                        <label class="f-label" onclick="copiarCampo('idCom${newId}', this)">Matrícula / Código *</label>
+                        <input type="text" id="idCom${newId}" placeholder="Código">
+                    </div>
+                    <div class="f-field">
+                        <label class="f-label" onclick="copiarCampo('ticket${newId}', this)">Ticket</label>
+                        <input type="text" id="ticket${newId}" placeholder="#">
+                    </div>
+                </div>
+                <div class="f-field" style="margin-top: 8px;">
+                    <label class="f-label" onclick="copiarCampo('motivo${newId}', this)">Motivo *</label>
+                    <textarea id="motivo${newId}" placeholder="Resumen de la atención..."></textarea>
+                </div>
+                <button class="btn-add" style="margin-top: 10px; width: 100%;" onclick="agregarHistorial(${newId})">Añadir al Historial</button>
+            `;
+            
+            contentContainer.appendChild(contentDiv);
+            chatTimers[newId] = null;
+            
+            showChat(newId);
+            showToast(`Chat ${newId} agregado`, 'azul');
+        }
+
+        let hits = JSON.parse(localStorage.getItem('c-hits')) || [];
+        let nAtt = parseInt(localStorage.getItem('c-natt')) || 1;
+        let isEditing = false;
+
+        function copiarCampo(id, el) { const val = document.getElementById(id).value.trim(); if(val){ navigator.clipboard.writeText(val); el.style.color = "var(--accent)"; } else { el.style.color = "var(--danger)"; } setTimeout(() => el.style.color = "", 2000); }
+        
+        function showChat(num) {
+            document.querySelectorAll('[id^="chatContent"]').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.chat-timer-tab-wrapper').forEach(wrapper => wrapper.classList.remove('active'));
+            
+            const content = document.getElementById('chatContent' + num);
+            const tabWrapper = document.getElementById('tab-wrapper-' + num);
+            
+            if(content) content.classList.add('active');
+            if(tabWrapper) tabWrapper.classList.add('active');
+        }
+
+        function agregarHistorial(chatIndex) {
+            const vendedorEl = document.getElementById('vendedor' + chatIndex);
+            const docEl = document.getElementById('numDoc' + chatIndex);
+            const idEl = document.getElementById('idCom' + chatIndex);
+            const tickEl = document.getElementById('ticket' + chatIndex);
+            const motEl = document.getElementById('motivo' + chatIndex);
+
+            // Validacion de campos obligatorios
+            let hasError = false;
+            
+            [vendedorEl, docEl, idEl, motEl].forEach(el => {
+                if(el) {
+                    el.classList.remove('error-border'); 
+                    if (el.value.trim() === "") {
+                        el.classList.add('error-border');
+                        hasError = true;
+                    }
+                }
+            });
+
+            if (hasError) {
+                showToast("Por favor complete los campos obligatorios (*)", "rojo");
+                return;
+            }
+
+            if(isEditing) { alert("Termina de editar antes de añadir nuevas entradas."); return; }
+            
+            const d = docEl.value.trim();
+            const horaNow = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            let t = (d.length === 8) ? "DNI" : (d.startsWith("10")) ? "RUC 10" : "RUC 20";
+            
+            let vendInfo = "";
+            if (vendedorEl && vendedorEl.value.trim() !== "") {
+                vendInfo = `VENDEDOR: ${vendedorEl.value.trim()}\n`;
+            }
+            
+            const nuevaEntrada = `[${horaNow}] Comercio ${nAtt} (Chat ${chatIndex})\n${vendInfo}TIPO: ${t}\nNRO DOC: ${d}\nID: ${idEl.value || "N/A"}\nTICKET: ${tickEl.value || "N/A"}\nMOTIVO: ${motEl.value || "..."}`;
+            
+            hits.push(nuevaEntrada); 
+            nAtt++; 
+            localStorage.setItem('c-hits', JSON.stringify(hits)); 
+            localStorage.setItem('c-natt', nAtt);
+            
+            renderH(); 
+            
+            docEl.value = idEl.value = tickEl.value = motEl.value = ""; 
+            if (vendedorEl) vendedorEl.value = "";
+            
+            docEl.focus();
+            
+            if(chatTimers[chatIndex] && chatTimers[chatIndex].interval) {
+                clearInterval(chatTimers[chatIndex].interval);
+                const btn = document.getElementById(`btn-chat${chatIndex}`);
+                btn.classList.remove('active');
+                btn.innerText = "5m";
+                btn.setAttribute('data-time-preview', "05:00");
+                chatTimers[chatIndex] = null;
+            }
+        }
+
+        function renderH() { 
+            if(isEditing) return; 
+            counterLabel.innerText = `TOTAL: ${hits.length}`; 
+            
+            const box = document.getElementById('historyBox');
+            if (hits.length > 0) {
+                box.innerText = hits.join("\n\n---\n\n");
+            } else {
+                box.innerText = "No hay gestiones registradas aún.";
+            }
+            box.style.display = "block";
+        }
+
+        function editarHistorial() {
+            const btn = document.getElementById('btnEditHist');
+            const box = document.getElementById('historyBox');
+            if (!isEditing) {
+                isEditing = true; 
+                btn.innerText = "Guardar"; 
+                btn.style.background = "var(--success)"; 
+                btn.style.color = "#000";
+                
+                const content = hits.join("\n\n---\n\n"); 
+                box.innerHTML = `<textarea id="editArea" style="min-height: 150px; height: 100%; width: 100%; background: transparent; color: inherit; border: none; font-family: inherit; font-size: inherit; padding: 0; margin: 0; outline: none; box-shadow: none; resize: vertical;">${content}</textarea>`; 
+                
+                const textarea = document.getElementById('editArea');
+                textarea.style.height = textarea.scrollHeight + 'px';
+                
+                textarea.focus();
+            } else {
+                const newContent = document.getElementById('editArea').value; 
+                hits = newContent.split("\n\n---\n\n").map(h => h.trim()).filter(h => h !== ""); 
+                localStorage.setItem('c-hits', JSON.stringify(hits));
+                isEditing = false; 
+                btn.innerText = "Editar"; 
+                btn.style.background = "var(--accent)"; 
+                btn.style.color = "#fff"; 
+                renderH();
+            }
+        }
+        function copiarHistorial() { if(!hits.length) return; navigator.clipboard.writeText(hits.join("\n\n---\n\n")).then(() => { showToast('Copiado con éxito', 'verde'); }); }
+        function descargarHistorial() {
+            if(!hits.length) return;
+            const contenido = hits.join("\n\n" + "=".repeat(20) + "\n\n"); const nombreArchivo = `Gestiones_Culqi_${new Date().toLocaleDateString().replace(/\//g,'-')}.txt`;
+            const blob = new Blob([contenido], { type: 'text/plain' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = nombreArchivo; a.click();
+            showToast('Sincronizando con Drive...', 'azul');
+            if (!navigator.onLine) { setTimeout(() => showToast('ALERTA: Sin conexión a Internet!', 'rojo'), 500); return; }
+            const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxhyoY2UADND1Tmd-rK2BJAv7EQlYHUA6nogcp85bWFvgWWNyHlpD5NgotzlbAfhRHZ/exec"; 
+            fetch(APPS_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ contenido: contenido, nombreArchivo: nombreArchivo }) })
+            .then(() => { showToast('Exportado en local y Drive!', 'verde'); })
+            .catch(error => { console.error(error); showToast('ALERTA: Falló el guardado en Drive!', 'rojo'); });
+        }
+        function limpiarTodoHist() { 
+            if(confirm("¿Estás seguro de borrar todo el historial y reiniciar el contador?")){ 
+                hits=[]; nAtt=1; isEditing = false; 
+                localStorage.removeItem('c-hits'); localStorage.removeItem('c-natt'); 
+                const btn = document.getElementById('btnEditHist');
+                btn.innerText = "Editar"; 
+                btn.style.background = "var(--accent)"; 
+                btn.style.color = "#fff";
+                renderH(); 
+            } 
+        }
+
+        /* === GESTIÓN DE PLANTILLAS WP === */
+        let wpTemplates = JSON.parse(localStorage.getItem('c-wp-tpl')) || [];
+        wpTemplates = wpTemplates.map(t => {
+            if (t.variants === undefined && t.text !== undefined) {
+                return { id: t.id, title: '', variants: [t.text] };
+            }
+            return t;
+        });
+        
+        function renderWpTemplates(templatesToRender = wpTemplates) {
+            const list = document.getElementById('wpTemplateList');
+            list.innerHTML = '';
+            
+            if (templatesToRender.length === 0) {
+                list.innerHTML = '<div style="text-align:center; padding:10px; color:var(--text-dim); font-size:1rem;">No hay plantillas guardadas. Agrega una nueva o importa un archivo JSON.</div>';
+                return;
+            }
+
+            templatesToRender.forEach((template) => {
+                const el = document.createElement('div');
+                el.className = 'wp-item';
+
+                if (template.variants.length === 1 && !template.title) {
+                    const displayText = template.variants[0].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    
+                    el.innerHTML = `
+                        <div class="wp-item-header">
+                             <div class="wp-item-title"></div>
+                        </div>
+                        <div class="wp-item-content">${displayText}</div>
+                        <div class="wp-item-copy-btn">COPIAR</div>
+                    `;
+                    el.addEventListener('click', (e) => {
+                        if (!e.target.closest('button')) copyWpTemplate(template.variants[0]);
+                    });
+                    
+                    el.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                        openWpModal(template.id);
+                    });
+                } 
+                else {
+                    let html = `
+                        <div class="wp-item-header">
+                            <div class="wp-item-title">${template.title ? template.title.replace(/</g, "&lt;").replace(/>/g, "&gt;") : ''}</div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                    `;
+                    
+                    template.variants.forEach(v => {
+                        const vText = v.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                        html += `
+                            <div class="wp-item" style="box-shadow: none; border-color: rgba(128,128,128,0.1); padding: 10px; background: rgba(128,128,128,0.02);" 
+                                 onclick="event.stopPropagation(); copyWpTemplate(\`${v.replace(/\\/g, '\\\\').replace(/`/g, '\\`')}\`)"
+                                 oncontextmenu="event.preventDefault(); event.stopPropagation(); openWpModal('${template.id}')">
+                                <div class="wp-item-content">${vText}</div>
+                                <div class="wp-item-copy-btn" style="bottom: 5px; right: 5px;">COPIAR</div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += `</div>`;
+                    el.innerHTML = html;
+                    
+                    if(template.variants.length > 0) {
+                        el.style.cursor = 'default';
+                        el.classList.remove('wp-item');
+                        el.style.background = 'transparent';
+                        el.style.border = 'none';
+                        el.style.padding = '0';
+                        el.style.boxShadow = 'none';
+                    } else {
+                        el.addEventListener('contextmenu', (e) => {
+                            e.preventDefault();
+                            openWpModal(template.id);
+                        });
+                    }
+                }
+                
+                list.appendChild(el);
+            });
+        }
+
+        function filterWpTemplates() {
+            const query = document.getElementById('wpSearchInput').value.toLowerCase();
+            const filtered = wpTemplates.filter(tpl => {
+                const titleMatch = (tpl.title || '').toLowerCase().includes(query);
+                const variantMatch = tpl.variants.some(v => v.toLowerCase().includes(query));
+                return titleMatch || variantMatch;
+            });
+            renderWpTemplates(filtered);
+        }
+
+        function copyWpTemplate(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Plantilla copiada', 'azul');
+            });
+        }
+
+        function createVariantInputHTML(value = '') {
+            return `
+            <div class="variant-item" style="display:flex; flex-direction:column; gap:5px; background:rgba(128,128,128,0.05); padding:10px; border-radius:8px; border:1px solid var(--border); position: relative;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:0.8rem; font-weight:bold; color:var(--text-dim); text-transform:uppercase;">Variante</span>
+                    <button type="button" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:0.9rem; display:flex; align-items:center;" onclick="this.parentElement.parentElement.remove()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    </button>
+                </div>
+                <textarea class="modal-textarea variant-textarea" placeholder="Escribe el contenido..." style="min-height:80px;">${value}</textarea>
+            </div>`;
+        }
+
+        function openWpModal(id = null) {
+            document.getElementById('wpModal').classList.add('active');
+            const container = document.querySelector('#wpModal .modal-content');
+            
+            let html = `
+                <div class="modal-title" id="wpModalTitle">${id ? 'EDITAR PLANTILLA' : 'NUEVA PLANTILLA'}</div>
+                <input type="hidden" id="wpModalId" value="${id || ''}">
+                <div>
+                    <label class="f-label">Título (Opcional)</label>
+                    <input type="text" id="wpModalInputTitle" class="modal-input" placeholder="Ej: Saludo inicial...">
+                </div>
+                <div id="wpModalVariantsContainer" style="display:flex; flex-direction:column; gap:8px; height:auto; padding-right:5px;">
+            `;
+
+            if (id) {
+                const tpl = wpTemplates.find(t => t.id === id);
+                setTimeout(() => { document.getElementById('wpModalInputTitle').value = tpl.title || ''; }, 0);
+                tpl.variants.forEach(v => { html += createVariantInputHTML(v.replace(/</g, "&lt;").replace(/>/g, "&gt;")); });
+            } else {
+                html += createVariantInputHTML();
+            }
+
+            html += `
+                </div>
+                <button type="button" onclick="document.getElementById('wpModalVariantsContainer').insertAdjacentHTML('beforeend', createVariantInputHTML())" style="background:transparent; border:1px dashed var(--accent); color:var(--accent); padding:8px; border-radius:8px; cursor:pointer; font-size:0.9rem; font-weight:bold; margin-top:5px;">+ AÑADIR VARIANTE</button>
+                
+                <div class="modal-actions">
+                    <div class="modal-actions-left">
+                         <button type="button" class="btn-modal btn-modal-delete" style="${id ? '' : 'display:none;'}" onclick="deleteCurrentWpTemplate()">ELIMINAR</button>
+                    </div>
+                    <button class="btn-modal btn-modal-cancel" onclick="closeWpModal()">CANCELAR</button>
+                    <button class="btn-modal btn-modal-save" onclick="saveWpTemplate()">GUARDAR</button>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        function closeWpModal() {
+            document.getElementById('wpModal').classList.remove('active');
+        }
+
+        function saveWpTemplate() {
+            const id = document.getElementById('wpModalId').value;
+            const title = document.getElementById('wpModalInputTitle').value.trim();
+            const textareas = document.querySelectorAll('#wpModalVariantsContainer .variant-textarea');
+            const variants = Array.from(textareas).map(t => t.value.trim()).filter(v => v !== '');
+            
+            if (variants.length === 0) {
+                alert('Escribe al menos una variante válida.');
+                return;
+            }
+
+            if (id) {
+                const index = wpTemplates.findIndex(t => t.id === id);
+                if (index !== -1) {
+                    wpTemplates[index].title = title;
+                    wpTemplates[index].variants = variants;
+                }
+            } else {
+                wpTemplates.unshift({
+                    id: 'tpl_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9),
+                    title: title,
+                    variants: variants
+                });
+            }
+            
+            localStorage.setItem('c-wp-tpl', JSON.stringify(wpTemplates));
+            renderWpTemplates();
+            closeWpModal();
+            showToast('Plantilla guardada', 'verde');
+        }
+
+        function deleteCurrentWpTemplate() {
+            const id = document.getElementById('wpModalId').value;
+            if (!id) return;
+            
+            if (confirm('¿Estás seguro de eliminar esta plantilla permanentemente?')) {
+                wpTemplates = wpTemplates.filter(t => t.id !== id);
+                localStorage.setItem('c-wp-tpl', JSON.stringify(wpTemplates));
+                renderWpTemplates();
+                closeWpModal();
+                showToast('Plantilla eliminada', 'verde');
+            }
+        }
+
+        function exportWpTemplates() {
+            if (wpTemplates.length === 0) {
+                alert('No hay plantillas para exportar.');
+                return;
+            }
+            const jsonStr = JSON.stringify(wpTemplates, null, 2);
+            const blob = new Blob([jsonStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `plantillas_wp_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Plantillas exportadas', 'verde');
+        }
+
+        function importWpTemplates(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        const currentIds = new Set(wpTemplates.map(t => t.id));
+                        let added = 0;
+                        const normalizedImport = imported.map(t => {
+                            if (t.text !== undefined && t.variants === undefined) {
+                                return { id: t.id, title: '', variants: [t.text] };
+                            }
+                            return t;
+                        });
+                        
+                        normalizedImport.forEach(tpl => {
+                            if (tpl.id && tpl.variants && Array.isArray(tpl.variants)) {
+                                if (!currentIds.has(tpl.id)) {
+                                    wpTemplates.push(tpl);
+                                    added++;
+                                }
+                            }
+                        });
+                        localStorage.setItem('c-wp-tpl', JSON.stringify(wpTemplates));
+                        renderWpTemplates();
+                        document.getElementById('wpSearchInput').value = '';
+                        showToast(`${added} plantillas importadas`, 'verde');
+                    } else {
+                        alert('Formato de JSON inválido.');
+                    }
+                } catch (err) {
+                    alert('Error al leer el archivo JSON.');
+                }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        // === LÓGICA NOTAS ===
+        function copyNote(type) { const text = document.getElementById('note-' + type); if (!text.value) return; text.select(); document.execCommand('copy'); showToast('¡Nota copiada!', 'verde'); }
+        function clearNote(type) { if(confirm('¿Estás seguro de borrar este bloque?')) { document.getElementById('note-' + type).value = ''; } }
+
+        // === LÓGICA SOPORTE ===
+        function showVal(num) { document.querySelectorAll('.val-content').forEach(el => el.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active')); document.getElementById('v' + num).classList.add('active'); document.getElementById('t' + num).classList.add('active'); }
+
+        // === LÓGICA TIPIFICADOR ===
+        function copyTip(text) { navigator.clipboard.writeText(text).then(() => { showToast('Tipificación copiada', 'azul'); const btn = event.currentTarget; const originalBorder = btn.style.borderColor; btn.style.borderColor = 'var(--success)'; setTimeout(() => { btn.style.borderColor = originalBorder; }, 1000); }); }
+
+        // === LÓGICA CALCULADORA ===
+        function toggleOtro() { const sel = document.getElementById('comisionSel').value; const otroDiv = document.getElementById('otroGrupo'); if (sel === 'otro') { otroDiv.classList.remove('hidden'); document.getElementById('otroValor').focus(); } else { otroDiv.classList.add('hidden'); } calcular(); }
+        function calcular() {
+            const monto = parseFloat(document.getElementById('monto').value) || 0; const sel = document.getElementById('comisionSel').value; const conIgv = document.getElementById('incluirIgv').checked;
+            let porc = (sel === 'otro') ? (parseFloat(document.getElementById('otroValor').value) || 0) : parseFloat(sel);
+            const comision = monto * (porc / 100); const igv = conIgv ? (comision * 0.18) : 0; const totalDescuento = comision + igv; const sobra = monto - totalDescuento;
+            document.getElementById('resComision').innerText = 'S/ ' + comision.toFixed(2); document.getElementById('resIgv').innerText = 'S/ ' + igv.toFixed(2); document.getElementById('resDescuento').innerText = '- S/ ' + totalDescuento.toFixed(2); document.getElementById('resSobra').innerText = 'S/ ' + sobra.toFixed(2);
+            generarSpeechCalc(monto, porc, comision, igv, totalDescuento, sobra, conIgv);
+        }
+        function generarSpeechCalc(m, p, c, i, td, s, conIgv) {
+            const caja = document.getElementById('speechText'); if (m <= 0 || p <= 0) { caja.innerText = "Ingrese un monto y porcentaje para generar la explicación..."; return; }
+            const m_f = m.toFixed(2), p_f = (p / 100).toFixed(4), c_f = c.toFixed(2), i_f = i.toFixed(2), td_f = td.toFixed(2), s_f = s.toFixed(2);
+            if (conIgv) {
+                caja.innerHTML = `Estimado, le explico cómo realizar este cálculo paso a paso en su teléfono: <br><br>1. Primero, tome su monto de <strong>S/ ${m_f}</strong> y <strong>multiplíquelo</strong> por <strong>${p_f}</strong> (que representa el ${p}%). Esto le da una comisión de <span class="highlight">S/ ${c_f}</span>.<br><br>2. Luego, a ese resultado de S/ ${c_f}, lo <strong>multiplicamos</strong> por <strong>0.18</strong> para obtener el IGV, lo cual sale <span class="highlight">S/ ${i_f}</span>.<br><br>3. Ahora, <strong>sumamos</strong> ambos valores (S/ ${c_f} + S/ ${i_f}) y obtenemos el descuento total de <span class="highlight">S/ ${td_f}</span>.<br><br>4. Finalmente, a su monto inicial de S/ ${m_f} le <strong>restamos</strong> el descuento total de S/ ${td_f}, y el resultado final que usted recibe es <span class="highlight">S/ ${s_f}</span> (aplicando el redondeo de decimales correspondiente).`;
+            } else {
+                caja.innerHTML = `Estimado, le explico cómo realizar este cálculo paso a paso en su teléfono (tarjeta inafecta al IGV): <br><br>1. Tome su monto de <strong>S/ ${m_f}</strong> y <strong>multiplíquelo</strong> por <strong>${p_f}</strong> (que representa el ${p}%). Esto le da un descuento total por comisión de <span class="highlight">S/ ${c_f}</span>.<br><br>2. Finalmente, a su monto inicial de S/ ${m_f} le <strong>restamos</strong> el descuento de S/ ${c_f}, y el resultado final que usted recibe es <span class="highlight">S/ ${s_f}</span> (aplicando el redondeo de decimales correspondiente).`;
+            }
+        }
+        function copiarSpeechCalc() { const caja = document.getElementById('speechText'); const textToCopy = caja.innerText; if (textToCopy.includes("Ingrese un monto")) return; navigator.clipboard.writeText(textToCopy).then(() => { showToast('Explicación copiada', 'verde'); }); }
+
+        // === LÓGICA PLANTILLAS ===
+        const PLANTILLAS = {
+            cbancaria: { titulo: 'Cuenta Bancaria', tipo: 'simple', campos: [{ id: 'cb_nombre', label: 'NOMBRE', basico: 'b_nombre' }, { id: 'cb_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'cb_id', label: 'ID', basico: 'b_id' }, { id: 'cb_telefono', label: 'N Celular de contacto', basico: 'b_telefono' }, { id: 'cb_comercio', label: 'Nombre del comercio' }, { id: 'cb_banco', label: 'Nombre del banco' }, { id: 'cb_ncuenta', label: 'Numero de cuenta bancaria' }, { id: 'cb_cci', label: 'Numero de CCI' }, { id: 'cb_tcuenta', label: 'Tipo de cuenta bancaria' }, { id: 'cb_moneda', label: 'Tipo de moneda' }, { id: 'cb_titular', label: 'Nombre de la titularidad' }] },
+            redpos: { titulo: 'RedPOS', tipo: 'redpos', preguntas: [{ id: 'rp_p1', num: '1.', label: 'Descripción del problema principal:', prefijo: 'Comercio indica que ', textarea: true }, { id: 'rp_p2', num: '2.', label: '¿Qué acción o proceso realizaba el comercio cuando ocurrió?', prefijo: 'El comercio estaba realizando ', textarea: true }, { id: 'rp_p3', num: '3.', label: '¿Cuál fue el impacto generado?', prefijo: 'Dado el inconveniente, el comercio ', textarea: true }, { id: 'rp_p4', num: '4.', label: '¿Cuáles fueron los descartes y validaciones realizadas por el asesor?', prefijo: 'Se realizó ', textarea: true }, { id: 'rp_p5_fijo', num: '5.', label: 'Adjuntar evidencias', fijo: 'Si', textarea: false }, { id: 'rp_p6', num: '6.', label: '¿Qué solución espera el comercio?', prefijo: 'La necesidad esencial es que ', textarea: true }, { id: 'rp_p7_fijo', num: '7.', label: '¿Qué información adicional se necesita para la resolución?', fijo: 'N.A', textarea: false }, { id: 'rp_p8_fijo', num: '8.', label: 'Tickets previos relacionados:', fijo: 'N.A', textarea: false }], basicos: [{ id: 'rp_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'rp_id', label: 'ID', basico: 'b_id' }, { id: 'rp_nombre', label: 'Nombre', basico: 'b_nombre' }, { id: 'rp_correo', label: 'Correo', basico: 'b_correo' }, { id: 'rp_telefono', label: 'Teléfono', basico: 'b_telefono' }, { id: 'rp_terminal', label: 'Terminal', basico: 'b_terminal' }] },
+            contometros: { titulo: 'Compra Contómetros', tipo: 'contometros', campos: [{ id: 'ct_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'ct_id', label: 'ID', basico: 'b_id' }, { id: 'ct_nombre', label: 'Nombre', basico: 'b_nombre' }, { id: 'ct_correo', label: 'Correo', basico: 'b_correo' }, { id: 'ct_solicita', label: 'COMERCIO SOLICITA CONTOMETROS' }, { id: 'ct_dir', label: 'DIRECCION' }, { id: 'ct_ref', label: 'REFERENCIA' }, { id: 'ct_horario', label: 'HORARIO DE ATENCION' }, { id: 'ct_celular', label: 'CELULAR', basico: 'b_telefono' }, { id: 'ct_encargado', label: 'PERSONA ENCARGADA' }] },
+            gratis_contometros: { titulo: 'Gratis Contómetros', tipo: 'gratis_contometros', campos: [{ id: 'gc_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'gc_id', label: 'ID', basico: 'b_id' }, { id: 'gc_nombre', label: 'Nombre', basico: 'b_nombre' }, { id: 'gc_correo', label: 'Correo', basico: 'b_correo' }, { id: 'gc_solicita', label: 'COMERCIO SOLICITA CONTOMETROS' }, { id: 'gc_dir', label: 'DIRECCION' }, { id: 'gc_ref', label: 'REFERENCIA' }, { id: 'gc_horario', label: 'HORARIO DE ATENCION' }, { id: 'gc_celular', label: 'CELULAR', basico: 'b_telefono' }, { id: 'gc_encargado', label: 'PERSONA ENCARGADA' }] },
+            correo: { titulo: 'Correo', tipo: 'correo', campos: [{ id: 'co_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'co_id', label: 'ID', basico: 'b_id' }, { id: 'co_nombre', label: 'Nombre', basico: 'b_nombre' }, { id: 'co_correo', label: 'Correo', basico: 'b_correo' }, { id: 'co_telefono', label: 'Teléfono', basico: 'b_telefono' }, { id: 'co_terminal', label: 'Terminal', basico: 'b_terminal' }, { id: 'co_dice', label: 'Dice' }, { id: 'co_debeDecir', label: 'Debe decir' }] },
+            cabono: { titulo: 'C.Abono', tipo: 'cabono', campos: [{ id: 'ca_motivo', label: 'Motivo' }, { id: 'ca_cambio', label: 'Cambio de' }, { id: 'ca_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'ca_id', label: 'ID', basico: 'b_id' }, { id: 'ca_nombre', label: 'Nombre', basico: 'b_nombre' }, { id: 'ca_correo', label: 'Correo', basico: 'b_correo' }, { id: 'ca_telefono', label: 'Teléfono', basico: 'b_telefono' }, { id: 'ca_terminal', label: 'Terminal', basico: 'b_terminal' }] }
+        };
+        let plantillaActiva = null;
+
+        document.addEventListener('paste', function(e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                const texto = e.clipboardData.getData('text');
+                if (texto.includes('Razón social') || texto.includes('Número de documento') || texto.includes('Detalle de comercio')) {
+                    e.preventDefault();
+                    const setValor = (baseId, valor) => {
+                        if (!valor) return;
+                        const elBase = document.getElementById(baseId); if(elBase) elBase.value = valor;
+                        if (plantillaActiva) {
+                            const p = PLANTILLAS[plantillaActiva];
+                            const todosLosCampos = [...(p.campos||[]), ...(p.basicos||[])];
+                            const campoVinculado = todosLosCampos.find(x => x.basico === baseId);
+                            if (campoVinculado) { const elDinamico = document.getElementById(campoVinculado.id); if(elDinamico) elDinamico.value = valor; }
+                        }
+                    };
+                    const ruc = texto.match(/Número de documento\s*[\n\r]+\s*(\d{11})/i); if(ruc) setValor('b_ruc', ruc[1].trim());
+                    const id = texto.match(/ID:?\s*[\n\r]*\s*(\d{10,})/i); if(id) setValor('b_id', id[1].trim());
+                    const nombre = texto.match(/Razón social\s*[\n\r]+\s*([^\n\r]+)/i); if(nombre) setValor('b_nombre', nombre[1].trim());
+                    const correo = texto.match(/Correo electrónico\s*[\n\r]+\s*([^\s]+@[^\s]+)/i); if(correo) setValor('b_correo', correo[1].trim());
+                    const tel = texto.match(/Celular\s*[\n\r]+\s*(\d{9,})/i); if(tel) setValor('b_telefono', tel[1].trim());
+                    const terminalesMatches = texto.match(/\b[A-Z0-9]{16,30}\b/g);
+                    if (terminalesMatches && terminalesMatches.length > 0) {
+                        const unicos = [...new Set(terminalesMatches)];
+                        let terminalesFormateados = (unicos.length === 1) ? unicos[0] : unicos.join(", ") + " y " + unicos.pop();
+                        setValor('b_terminal', terminalesFormateados);
+                    }
+                    showToast('Datos extraídos y autocompletados', 'verde');
+                }
+            }
+        });
+
+        function irPrincipal() {
+            if (plantillaActiva) { document.getElementById('seccionPlantilla').style.display = 'none'; document.getElementById('camposBasicosContainer').style.display = 'flex'; document.querySelectorAll('.btn-plantilla').forEach(b => b.classList.remove('activo')); plantillaActiva = null; }
+        }
+        function togglePlantilla(clave, btn) {
+            const seccion = document.getElementById('seccionPlantilla'); const basicosContainer = document.getElementById('camposBasicosContainer'); const allBtns = document.querySelectorAll('.btn-plantilla:not(.btn-principal)');
+            if (plantillaActiva === clave) { seccion.style.display = 'none'; basicosContainer.style.display = 'flex'; btn.classList.remove('activo'); plantillaActiva = null; return; }
+            allBtns.forEach(b => b.classList.remove('activo')); btn.classList.add('activo');
+            const p = PLANTILLAS[clave]; document.getElementById('plantillaTitulo').textContent = p.titulo;
+            const contenedor = document.getElementById('camposPlantilla'); contenedor.innerHTML = '';
+            if (p.tipo === 'simple') renderSimple(p, contenedor); else if (p.tipo === 'redpos') renderRedPOS(p, contenedor); else if (p.tipo === 'contometros') renderContometros(p, contenedor); else if (p.tipo === 'gratis_contometros') renderGratisContometros(p, contenedor); else if (p.tipo === 'correo') renderCorreo(p, contenedor); else if (p.tipo === 'cabono') renderCAbono(p, contenedor);
+            basicosContainer.style.display = 'none'; seccion.style.display = 'flex'; plantillaActiva = clave;
+        }
+
+        function mkVertical(c) { const wrap = document.createElement('div'); wrap.className = 'campo-vertical'; const lbl = document.createElement('label'); lbl.textContent = c.label + ':'; lbl.setAttribute('for', c.id); const input = document.createElement('input'); input.type = 'text'; input.id = c.id; input.placeholder = c.label; if (c.basico) { const val = document.getElementById(c.basico)?.value || ''; if (val) input.value = val; } wrap.appendChild(lbl); wrap.appendChild(input); return wrap; }
+        function mkInline(c) { const row = document.createElement('div'); row.className = 'campo-row'; const lbl = document.createElement('label'); lbl.textContent = c.label + ':'; lbl.setAttribute('for', c.id); const input = document.createElement('input'); input.type = 'text'; input.id = c.id; input.placeholder = c.label; if (c.basico) { const val = document.getElementById(c.basico)?.value || ''; if (val) input.value = val; } row.appendChild(lbl); row.appendChild(input); return row; }
+
+        function renderSimple(p, contenedor) { const cab = document.createElement('div'); cab.className = 'texto-fijo-bloque'; cab.textContent = 'Estimados, se actualiza cuenta de banco en 1era linea según lo solicitado por el comercio:'; contenedor.appendChild(cab); p.campos.forEach(c => contenedor.appendChild(mkVertical(c))); }
+        function renderRedPOS(p, contenedor) {
+            p.preguntas.forEach(q => {
+                const bloque = document.createElement('div'); bloque.className = 'campo-pregunta'; const lbl = document.createElement('span'); lbl.className = 'pregunta-label'; lbl.textContent = q.num + ' ' + q.label; bloque.appendChild(lbl);
+                if (q.fijo) { const fijo = document.createElement('div'); fijo.className = 'campo-fijo'; fijo.textContent = q.fijo; bloque.appendChild(fijo); } 
+                else { const ta = document.createElement('textarea'); ta.id = q.id; ta.rows = 1; ta.value = q.prefijo; ta.oninput = function () { autoAjustar(this); }; ta.addEventListener('focus', function () { if (this.value === q.prefijo) this.setSelectionRange(q.prefijo.length, q.prefijo.length); }); setTimeout(() => autoAjustar(ta), 0); bloque.appendChild(ta); }
+                contenedor.appendChild(bloque);
+            });
+            const sep = document.createElement('hr'); sep.className = 'plantilla-sep'; contenedor.appendChild(sep); const tit = document.createElement('div'); tit.className = 'plantilla-titulo'; tit.style.marginTop = '2px'; tit.textContent = 'Datos del comercio'; contenedor.appendChild(tit); p.basicos.forEach(c => contenedor.appendChild(mkInline(c)));
+        }
+        function renderContometros(p, contenedor) {
+            const cab1 = document.createElement('div'); cab1.className = 'texto-fijo-bloque'; cab1.textContent = 'Estimados, por favor su apoyo con lo siguiente:'; contenedor.appendChild(cab1);
+            const cab2 = document.createElement('div'); cab2.className = 'texto-fijo-bloque'; cab2.textContent = 'Motivo de la derivación: Comercio se comunica para poder solicitar contómetros, se valida que no hay campaña de contómetros gratis, por lo que se genera y envía link de pago.'; contenedor.appendChild(cab2);
+            p.campos.forEach((c, i) => { if (i === 2 || i === 4 || i === 5) { const sep = document.createElement('hr'); sep.className = 'plantilla-sep'; contenedor.appendChild(sep); } contenedor.appendChild(mkVertical(c)); });
+            const sep2 = document.createElement('hr'); sep2.className = 'plantilla-sep'; contenedor.appendChild(sep2); const pie = document.createElement('div'); pie.className = 'texto-fijo-bloque'; pie.textContent = 'Tickets previos: No cuenta con tickets previos.'; contenedor.appendChild(pie);
+        }
+        function renderGratisContometros(p, contenedor) {
+            const cab1 = document.createElement('div'); cab1.className = 'texto-fijo-bloque'; cab1.textContent = 'Estimados, se genera solicitud de contómetros gratuitos:'; contenedor.appendChild(cab1);
+            p.campos.forEach((c, i) => { if (i === 2 || i === 4 || i === 5) { const sep = document.createElement('hr'); sep.className = 'plantilla-sep'; contenedor.appendChild(sep); } contenedor.appendChild(mkVertical(c)); });
+            const sep2 = document.createElement('hr'); sep2.className = 'plantilla-sep'; contenedor.appendChild(sep2); const pie = document.createElement('div'); pie.className = 'texto-fijo-bloque'; pie.textContent = 'Tickets previos: No cuenta con tickets previos.'; contenedor.appendChild(pie);
+        }
+        function renderCorreo(p, contenedor) {
+            const cab = document.createElement('div'); cab.className = 'texto-fijo-bloque'; cab.textContent = 'Estimados, comercio solicita cambio de correo y se atiende en 1era linea.'; contenedor.appendChild(cab);
+            const sep0 = document.createElement('hr'); sep0.className = 'plantilla-sep'; contenedor.appendChild(sep0);
+            ['co_ruc', 'co_id', 'co_nombre', 'co_correo', 'co_telefono', 'co_terminal'].forEach(id => { const c = p.campos.find(x => x.id === id); contenedor.appendChild(mkInline(c)); });
+            const sep1 = document.createElement('hr'); sep1.className = 'plantilla-sep'; contenedor.appendChild(sep1); const pie0 = document.createElement('div'); pie0.className = 'texto-fijo-bloque'; pie0.textContent = 'Tickets previos relacionados: NO'; contenedor.appendChild(pie0);
+            const sep2 = document.createElement('hr'); sep2.className = 'plantilla-sep'; contenedor.appendChild(sep2); contenedor.appendChild(mkVertical(p.campos.find(x => x.id === 'co_dice'))); contenedor.appendChild(mkVertical(p.campos.find(x => x.id === 'co_debeDecir')));
+            const sep3 = document.createElement('hr'); sep3.className = 'plantilla-sep'; contenedor.appendChild(sep3); const pie1 = document.createElement('div'); pie1.className = 'texto-fijo-bloque'; pie1.textContent = 'Pasa validación Nivel1'; contenedor.appendChild(pie1);
+            setTimeout(() => { const elCorreo = document.getElementById('co_correo'); const elDice = document.getElementById('co_dice'); if (elCorreo && elDice) { if (!elDice.value && elCorreo.value) elDice.value = elCorreo.value; elCorreo.addEventListener('input', () => { elDice.value = elCorreo.value; }); } }, 60);
+        }
+        function renderCAbono(p, contenedor) {
+            const cab = document.createElement('div'); cab.className = 'texto-fijo-bloque'; cab.textContent = 'Estimados, su apoyo con lo siguiente, por favor: Cliente solicita cambiar el tipo de abono,'; contenedor.appendChild(cab);
+            const wMotivo = document.createElement('div'); wMotivo.className = 'campo-vertical'; const lblM = document.createElement('label'); lblM.textContent = 'Motivo de cambio:'; lblM.setAttribute('for', 'ca_motivo'); const inpM = document.createElement('input'); inpM.type = 'text'; inpM.id = 'ca_motivo'; inpM.placeholder = 'descripción...'; wMotivo.appendChild(lblM); wMotivo.appendChild(inpM); contenedor.appendChild(wMotivo);
+            const sep0 = document.createElement('hr'); sep0.className = 'plantilla-sep'; contenedor.appendChild(sep0);
+            const wCambio = document.createElement('div'); wCambio.className = 'campo-vertical'; const lblC = document.createElement('label'); lblC.textContent = 'Cambio de:'; lblC.setAttribute('for', 'ca_cambio'); const inpC = document.createElement('input'); inpC.type = 'text'; inpC.id = 'ca_cambio'; inpC.placeholder = 'T a T'; wCambio.appendChild(lblC); wCambio.appendChild(inpC); contenedor.appendChild(wCambio);
+            const sep1 = document.createElement('hr'); sep1.className = 'plantilla-sep'; contenedor.appendChild(sep1);
+            ['ca_ruc', 'ca_id', 'ca_nombre', 'ca_correo', 'ca_telefono', 'ca_terminal'].forEach(id => { const c = p.campos.find(x => x.id === id); contenedor.appendChild(mkInline(c)); });
+            const sep2 = document.createElement('hr'); sep2.className = 'plantilla-sep'; contenedor.appendChild(sep2); const pie1 = document.createElement('div'); pie1.className = 'texto-fijo-bloque'; pie1.textContent = 'Validación Nivel 1'; contenedor.appendChild(pie1); const pie2 = document.createElement('div'); pie2.className = 'texto-fijo-bloque'; pie2.textContent = 'Tickets previos relacionados: NO'; contenedor.appendChild(pie2);
+        }
+
+        function copiarPlantilla() {
+            if (!plantillaActiva) return;
+            const v = id => (document.getElementById(id)?.value || '').trim(); let texto = '';
+            if (plantillaActiva === 'cbancaria') { texto = 'Estimados, se actualiza cuenta de banco en 1era linea según lo solicitado por el comercio:\n\n' + 'NOMBRE: ' + v('cb_nombre') + '\nRUC: ' + v('cb_ruc') + '\nID: ' + v('cb_id') + '\nN Celular de contacto: ' + v('cb_telefono') + '\nPaso la validación Nivel 1\n' + 'Datos de la cuenta bancaria:\nNombre del comercio: ' + v('cb_comercio') + '\nNombre del banco: ' + v('cb_banco') + '\nNumero de cuenta bancaria: ' + v('cb_ncuenta') + '\nNumero de CCI: ' + v('cb_cci') + '\nTipo de cuenta bancaria: ' + v('cb_tcuenta') + '\nTipo de moneda: ' + v('cb_moneda') + '\nNombre de la titularidad: ' + v('cb_titular') + '\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
+            if (plantillaActiva === 'redpos') { const p = PLANTILLAS.redpos; let bloque = ''; p.preguntas.forEach(q => { bloque += q.num + ' ' + q.label + '\n' + (q.fijo ? q.fijo : v(q.id)) + '\n\n'; }); texto = 'Estimados, su apoyo con lo siguiente, por favor:\n\n' + bloque.trimEnd() + '\n\n' + 'RUC: ' + v('rp_ruc') + '\nID: ' + v('rp_id') + '\nNombre: ' + v('rp_nombre') + '\nCorreo: ' + v('rp_correo') + '\nTeléfono: ' + v('rp_telefono') + '\nTerminal: ' + v('rp_terminal') + '\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
+            if (plantillaActiva === 'contometros') { texto = 'Estimados, por favor su apoyo con lo siguiente:\n\n' + 'Motivo de la derivación: Comercio se comunica para poder solicitar contómetros, se valida que no hay campaña de contómetros gratis, por lo que se genera y envía link de pago.\n\n' + 'RUC: ' + v('ct_ruc') + '\nID: ' + v('ct_id') + '\n\nNombre: ' + v('ct_nombre') + '\nCorreo: ' + v('ct_correo') + '\n\nCOMERCIO SOLICITA CONTOMETROS: ' + v('ct_solicita') + '\n\n' + 'DIRECCION: ' + v('ct_dir') + '\nREFERENCIA: ' + v('ct_ref') + '\nHORARIO DE ATENCION: ' + v('ct_horario') + '\nCELULAR: ' + v('ct_celular') + '\nPERSONA ENCARGADA: ' + v('ct_encargado') + '\n\n' + 'Tickets previos: No cuenta con tickets previos.\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
+            if (plantillaActiva === 'gratis_contometros') { texto = 'Estimados, se genera solicitud de contómetros gratuitos:\n\n' + 'RUC: ' + v('gc_ruc') + '\nID: ' + v('gc_id') + '\n\nNombre: ' + v('gc_nombre') + '\nCorreo: ' + v('gc_correo') + '\n\nCOMERCIO SOLICITA CONTOMETROS: ' + v('gc_solicita') + '\n\n' + 'DIRECCION: ' + v('gc_dir') + '\nREFERENCIA: ' + v('gc_ref') + '\nHORARIO DE ATENCION: ' + v('gc_horario') + '\nCELULAR: ' + v('gc_celular') + '\nPERSONA ENCARGADA: ' + v('gc_encargado') + '\n\n' + 'Tickets previos: No cuenta con tickets previos.\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
+            if (plantillaActiva === 'correo') { texto = 'Estimados, comercio solicita cambio de correo y se atiende en 1era linea.\n\n' + 'RUC: ' + v('co_ruc') + '\nID: ' + v('co_id') + '\nNombre: ' + v('co_nombre') + '\nCorreo: ' + v('co_correo') + '\nTeléfono: ' + v('co_telefono') + '\nTerminal: ' + v('co_terminal') + '\n\nTickets previos relacionados: NO\n\n' + 'Dice: ' + v('co_dice') + '\nDebe decir: ' + v('co_debeDecir') + '\n\nPasa validación Nivel1\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
+            if (plantillaActiva === 'cabono') { texto = 'Estimados, su apoyo con lo siguiente, por favor: Cliente solicita cambiar el tipo de abono, ' + v('ca_motivo') + '\n\n' + 'Cambio de ' + v('ca_cambio') + '\n\n' + 'RUC: ' + v('ca_ruc') + '\nID: ' + v('ca_id') + '\nNombre: ' + v('ca_nombre') + '\nCorreo: ' + v('ca_correo') + '\nTeléfono: ' + v('ca_telefono') + '\nTerminal: ' + v('ca_terminal') + '\n\nValidación Nivel 1\n\nTickets previos relacionados: NO\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
+            copiarTextoP(texto, 'verde', 'Copiado!');
+        }
+
+        function copiarSolicitud() { const v = id => (document.getElementById(id)?.value || '').trim(); const texto = 'Estimados, su apoyo con lo siguiente, por favor:\n\n' + 'RUC: ' + v('b_ruc') + '\nID: ' + v('b_id') + '\nNombre: ' + v('b_nombre') + '\nCorreo: ' + v('b_correo') + '\nTeléfono: ' + v('b_telefono') + '\nTerminal: ' + v('b_terminal') + '\n\nTickets previos relacionados: NO\nPASA VALIDACION N1/N2\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; copiarTextoP(texto, 'azul', 'Solicitud copiada!'); }
+        function copiarReclamo() { const v = id => (document.getElementById(id)?.value || '').trim(); const texto = 'Estimados, su apoyo, por favor, comercio indica el siguiente reclamo:\n\n' + '1. Descripción del problema principal:\nComercio reclama por\n\n' + '2. ¿Qué acción o proceso realizaba el comercio cuando ocurrió?\nRealizando\n\n' + '3. ¿Cuál fue el impacto generado?\nComercio\n\n' + '4. ¿Cuáles fueron los descartes y validaciones realizadas por el asesor?\nSe valida que\n\n' + '5. Adjuntar evidencias\n\n' + '6. ¿Qué solución espera el comercio?\nSolicita\n\n' + '7. ¿Qué información adicional se necesita para la resolución?\n' + 'RUC: ' + v('b_ruc') + '\nID: ' + v('b_id') + '\nNombre: ' + v('b_nombre') + '\nCorreo: ' + v('b_correo') + '\nTeléfono: ' + v('b_telefono') + '\nTerminal: ' + v('b_terminal') + '\n\n8. Tickets previos relacionados: NO\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; copiarTextoP(texto, 'naranja', 'Reclamo copiado!'); }
+
+        function copiarTextoP(texto, colorType, msg) {
+            const hacer = () => showToast(msg, colorType);
+            if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(texto).then(hacer); } 
+            else { const el = document.createElement('textarea'); el.value = texto; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el); hacer(); }
+            if (plantillaActiva) { const btn = document.getElementById('btnCopiar'); if (btn) { const ogText = btn.textContent; btn.textContent = 'Copiado'; btn.classList.add('copiado'); setTimeout(() => { btn.textContent = ogText; btn.classList.remove('copiado'); }, 2000); } }
+        }
+
+        function autoAjustar(el) { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; }
+        function limpiarTodoPlantillas() {
+            ['b_ruc', 'b_id', 'b_nombre', 'b_correo', 'b_telefono', 'b_terminal'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+            if (plantillaActiva) {
+                const p = PLANTILLAS[plantillaActiva]; const todos = [...(p.campos || []), ...(p.basicos || []), ...(p.preguntas || []).filter(q => !q.fijo)];
+                todos.forEach(c => { const el = document.getElementById(c.id); if (el) { el.value = c.prefijo || ''; autoAjustar(el); } });
+                ['co_dice', 'co_debeDecir', 'ca_motivo', 'ca_cambio'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+            }
+        }
+
+        // === INICIALIZACIÓN GLOBAL ===
+        window.addEventListener('DOMContentLoaded', () => {
+            // Renderizar el historial directamente
+            renderH();
+            
+            // Inicializar Dashboard
+            document.getElementById('entryTime').value = localStorage.getItem('c-entry') || "08:00"; 
+            document.getElementById('lunchTime').value = localStorage.getItem('c-lunch') || "13:00"; 
+            document.getElementById('eodTime').value = localStorage.getItem('c-eod') || "18:00"; 
+            actualizarTodosLosContadores();
+            setInterval(actualizarTodosLosContadores, 1000);
+            
+            // Renderizar las plantillas de WP guardadas localmente al cargar
+            renderWpTemplates();
+
+            // Atajos de teclado Dashboard
+            document.addEventListener('keydown', (e) => {
+                // Atajos para números del 1 al 7 para cambiar de módulo
+                if (e.key >= '1' && e.key <= '7' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                    const idx = e.key;
+                    const bubbles = document.querySelectorAll('.nav-bubbles .bubble');
+                    // Buscar la burbuja que tenga data-index igual al número presionado
+                    for (let i = 0; i < bubbles.length; i++) {
+                        if (bubbles[i].getAttribute('data-index') === idx) {
+                            bubbles[i].click(); // Simular clic
+                            break;
+                        }
+                    }
+                }
+
+                if (e.ctrlKey && e.key === 'Enter' && document.getElementById('tool-dashboard').classList.contains('active')) {
+                    // Buscar qué chat está activo e invocar el add respectivo
+                    const activeContent = document.querySelector('#chatsContainer .val-content.active');
+                    if (activeContent) {
+                        const chatId = activeContent.id.replace('chatContent', '');
+                        agregarHistorial(chatId);
+                    }
+                }
+            });
+
+            // Inicializar Calculadora
+            calcular();
+        });
+
+    </script>
+</body>
+</html>
