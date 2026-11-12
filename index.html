@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Culqi Master Suite Unificada digital</title>
+    <title>Culqi Master Suite Digital</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22white%22 rx=%2220%22/><path d=%22M55 10 L25 55 L50 55 L45 90 L80 45 L55 45 Z%22 fill=%22black%22 stroke=%22black%22 stroke-width=%225%22 stroke-linejoin=%22round%22/></svg>">
     <style>
         /* === VARIABLES GLOBALES UNIFICADAS === */
@@ -51,7 +51,7 @@
             min-height: 100vh; 
             padding: 20px 10px; 
             transition: all 0.3s ease;
-            font-size: 1.1rem; /* Incremento general de textos */
+            font-size: 1.1rem; 
         }
 
         /* === NAVEGACIÓN UNIFICADA === */
@@ -173,7 +173,7 @@
             flex-direction: column;
             gap: 10px;
             transition: opacity 0.3s ease;
-            overflow: visible; /* Remover restricciones de altura */
+            overflow: visible; 
             width: 100%;
             box-sizing: border-box;
         }
@@ -212,7 +212,7 @@
             box-sizing: border-box;
             max-width: var(--main-width);
             align-items: stretch;
-            flex-wrap: nowrap; /* FORZAR UNA SOLA FILA */
+            flex-wrap: nowrap; 
         }
         
         .timer-card { 
@@ -234,7 +234,7 @@
         .fullscreen-btn {
             position: absolute;
             top: 5px;
-            left: 5px; /* REUBICADO A LA IZQUIERDA */
+            left: 5px; 
             background: transparent;
             border: none;
             color: var(--text-dim);
@@ -254,17 +254,15 @@
         .fullscreen-btn svg { width: 16px; height: 16px; fill: currentColor; }
         
         /* Controles Entrada, Almuerzo, Salida */
-        /* Eliminados los botones laterales, se confía en el hover+wheel */
         .timer-carousel { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; overflow: hidden;}
         
-        /* El scroll area que captura la rueda del mouse */
         .carousel-scroll-area {
             width: 100%;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: ns-resize; /* Cursor para indicar scroll vertical */
+            cursor: ns-resize; 
         }
 
         .carousel-content { flex: 1; display: none; width: 100%;}
@@ -350,7 +348,7 @@
             display: flex;
             gap: 5px;
             margin-bottom: 8px;
-            flex-wrap: nowrap; /* Forzar 1 fila */
+            flex-wrap: nowrap; 
         }
 
         .chat-timer-tab-wrapper { 
@@ -385,12 +383,12 @@
             border: none; 
             color: var(--text); 
             padding: 8px; 
-            font-size: 1.1rem; /* Más grande en conteo */
+            font-size: 1.1rem; 
             font-weight: bold; 
             cursor: pointer; 
             transition: 0.2s; 
             position: relative; 
-            min-width: 65px; /* Más ancho inicial */
+            min-width: 65px; 
             font-family: 'Consolas', monospace;
         }
         .chat-timer-btn:hover { background: rgba(128,128,128,0.2); color: var(--accent); }
@@ -429,15 +427,15 @@
             justify-content: center; 
             width: 35px; 
             font-size: 1.3rem;
-            flex-shrink: 0; /* Que el boton + no se encoja */
+            flex-shrink: 0; 
         }
         .btn-add-chat:hover { background: var(--input-bg); border-color: var(--accent); color: var(--accent); }
 
         /* REGLA DE ORO VERTICAL 502x1080 */
         @media (max-width: 550px) {
             .timers-row { 
-                flex-direction: row; /* Forzar fila horizontal siempre */
-                gap: 5px; /* Reducir gap en mobile para que entren */
+                flex-direction: row; 
+                gap: 5px; 
             }
             .timer-card { 
                 padding: 6px; 
@@ -450,7 +448,7 @@
             .timer-actions-col { min-width: 50px; }
             
             #chatTabsContainer { 
-                flex-wrap: nowrap; /* Mantiene chats en una fila */
+                flex-wrap: nowrap; 
                 gap: 3px;
             }
             .chat-timer-tab-wrapper .tab-btn { padding: 6px 4px; font-size: 0.7rem; }
@@ -471,11 +469,50 @@
         .btn-foot { flex: 1; padding: 10px 2px; border-radius: 8px; border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 4px; min-width: 100px;} 
 
         /* === GESTOR DE PLANTILLAS WP === */
-        /* ALTO DINAMICO */
         .wp-tpl-container { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; margin-bottom: 10px; height: auto; max-height: none; width: 100%; overflow: visible;}
-        .wp-search-row { display: flex; gap: 8px; align-items: center; flex-shrink: 0; flex-wrap: wrap;}
-        .wp-search-input { flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--input-bg); color: var(--text); font-size: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); min-width: 150px;}
+        
+        /* CORRECCIÓN: Contenedor del buscador con botón integrado (Requerimiento 1) */
+        .wp-search-row { display: flex; gap: 8px; align-items: stretch; flex-shrink: 0; flex-wrap: wrap;}
+        .search-input-wrapper {
+            position: relative;
+            flex: 1;
+            display: flex;
+            align-items: stretch; /* Asegura que el contenedor tome la altura completa de la fila */
+        }
+        .wp-search-input { 
+            width: 100%; /* Toma todo el espacio de su wrapper */
+            padding: 10px 35px 10px 14px; /* Aumentado el padding derecho a 35px para dar espacio exacto a la X */
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            background: var(--input-bg); 
+            color: var(--text); 
+            font-size: 1rem; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+            min-width: 150px;
+            box-sizing: border-box; /* Fundamental para que el padding no desborde el input */
+        }
         .wp-search-input:focus { border-color: var(--accent); outline: none; }
+        
+        /* BOTON X PARA BUSCADOR MEJORADO (Alineación absoluta dentro de search-input-wrapper) */
+        .btn-clear-search {
+            position: absolute;
+            right: 5px; /* Fijado exactamente al margen derecho del input */
+            top: 50%; /* Centrado vertical */
+            transform: translateY(-50%); /* Centrado vertical exacto */
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            font-family: system-ui, sans-serif; /* Tipografía limpia de sistema */
+            font-weight: bold;
+            font-size: 1rem; /* Letra legible pero contenida */
+            cursor: pointer;
+            display: none; /* Oculto por defecto */
+            padding: 5px 10px;
+            transition: color 0.2s;
+            height: 100%; /* Aprovecha el area para clics mas faciles */
+        }
+        .btn-clear-search:hover { color: var(--danger); }
+
         .btn-wp-action { background: var(--accent); color: white; border: none; padding: 10px 14px; border-radius: 12px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: transform 0.1s ease, background 0.2s; display: flex; align-items: center; justify-content: center; white-space: nowrap;}
         .btn-wp-action:hover { filter: brightness(1.1); }
         .btn-wp-action:active { transform: scale(0.95); }
@@ -492,14 +529,16 @@
         .wp-item-copy-btn { position: absolute; bottom: 12px; right: 12px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; font-size: 0.85rem; color: var(--accent); font-weight: bold; opacity: 0; transition: 0.2s; pointer-events: none;}
         .wp-item:hover .wp-item-copy-btn { opacity: 1; }
         
-        /* Modal simple para editar/agregar plantillas */
+        /* Modal simple para editar/agregar plantillas y confirmaciones */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 10px; box-sizing: border-box;}
         .modal-overlay.active { display: flex; }
         .modal-content { background: var(--surface); padding: 20px; border-radius: 12px; border: 1px solid var(--border); width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 12px; max-height: 90vh; overflow-y: auto;}
         .modal-title { font-size: 1.15rem; font-weight: bold; color: var(--accent); text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .modal-text { font-size: 1rem; color: var(--text); text-align: center; margin-bottom: 10px; }
         .modal-input { padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--input-bg); color: var(--text); font-size: 1rem; width: 100%; box-sizing: border-box; font-family: inherit; }
         .modal-textarea { width: 100%; min-height: 150px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px; color: var(--text); box-sizing: border-box; font-family: inherit; font-size: 1rem; resize: vertical; }
         .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px; align-items: center; flex-wrap: wrap;}
+        .modal-actions.center { justify-content: center; }
         .modal-actions-left { flex: 1; }
         .btn-modal { padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.95rem; border: none; }
         .btn-modal-cancel { background: transparent; color: var(--text); border: 1px solid var(--border); }
@@ -674,10 +713,22 @@
         <div id="fs-timer">00:00:00</div>
     </div>
 
+    <!-- MODAL CONFIRMACION GLOBAL -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-title" id="confirmModalTitle">CONFIRMACIÓN</div>
+            <div class="modal-text" id="confirmModalText">¿Estás seguro de realizar esta acción?</div>
+            <div class="modal-actions center">
+                <button class="btn-modal btn-modal-cancel" onclick="closeConfirmModal()">CANCELAR</button>
+                <button class="btn-modal btn-modal-delete" id="confirmModalBtn">SÍ, ESTOY SEGURO</button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL PLANTILLAS WP -->
     <div class="modal-overlay" id="wpModal">
         <div class="modal-content">
-            <div class="modal-title" id="wpModalTitle">Nueva Plantilla</div>
+            <div class="modal-title" id="wpModalTitle">NUEVA PLANTILLA</div>
             <input type="hidden" id="wpModalId">
             <div>
                 <label class="f-label">Título</label>
@@ -686,13 +737,13 @@
             <div id="wpModalVariantsContainer" style="display:flex; flex-direction:column; gap:8px; height:auto; padding-right:5px;">
                 <!-- Las variantes se cargan dinámicamente aquí -->
             </div>
-            <button type="button" onclick="document.getElementById('wpModalVariantsContainer').insertAdjacentHTML('beforeend', createVariantInputHTML())" style="background:transparent; border:1px dashed var(--accent); color:var(--accent); padding:8px; border-radius:8px; cursor:pointer; font-size:0.9rem; font-weight:bold; margin-top:5px;">+ Añadir variante</button>
+            <button type="button" onclick="document.getElementById('wpModalVariantsContainer').insertAdjacentHTML('beforeend', createVariantInputHTML())" style="background:transparent; border:1px dashed var(--accent); color:var(--accent); padding:8px; border-radius:8px; cursor:pointer; font-size:0.9rem; font-weight:bold; margin-top:5px;">+ AÑADIR VARIANTE</button>
             <div class="modal-actions">
                 <div class="modal-actions-left">
-                     <button id="btnModalDeleteTemplate" type="button" class="btn-modal btn-modal-delete" style="display:none;" onclick="deleteCurrentWpTemplate()">Eliminar</button>
+                     <button id="btnModalDeleteTemplate" type="button" class="btn-modal btn-modal-delete" style="display:none;" onclick="requestDeleteCurrentWpTemplate()">ELIMINAR</button>
                 </div>
-                <button class="btn-modal btn-modal-cancel" onclick="closeWpModal()">Cancelar</button>
-                <button class="btn-modal btn-modal-save" onclick="saveWpTemplate()">Guardar</button>
+                <button class="btn-modal btn-modal-cancel" onclick="closeWpModal()">CANCELAR</button>
+                <button class="btn-modal btn-modal-save" onclick="saveWpTemplate()">GUARDAR</button>
             </div>
         </div>
     </div>
@@ -718,7 +769,7 @@
                         <svg viewBox="0 0 24 24"><path d="M5 5h5v2H7v3H5V5zm9 0h5v5h-2V7h-3V5zm5 9h2v5h-5v-2h3v-3zm-9 3H5v-5h2v3h3v2z"/></svg>
                     </button>
                     
-                    <!-- NUEVA LÓGICA DE NAVEGACIÓN POR RUEDA DEL MOUSE (SCROLL) -->
+                    <!-- LÓGICA DE NAVEGACIÓN POR RUEDA DEL MOUSE (SCROLL) -->
                     <div class="timer-carousel carousel-scroll-area" id="mainCarouselArea" title="Usa la rueda del mouse aquí para cambiar">
                         <!-- Control Entrada -->
                         <div id="countdownContainer1" class="carousel-content active" data-title="ENTRADA">
@@ -806,7 +857,7 @@
                     <div id="chatContent1" class="val-content active">
                         <div class="f-row">
                             <div class="f-field">
-                                <label class="f-label" onclick="copiarCampo('vendedor1', this)">Vendedor *</label>
+                                <label class="f-label" onclick="copiarCampo('vendedor1', this)">Vendedor/a *</label>
                                 <input type="text" id="vendedor1" placeholder="Nombre...">
                             </div>
                             <div class="f-field">
@@ -835,7 +886,7 @@
                     <div id="chatContent2" class="val-content">
                         <div class="f-row">
                             <div class="f-field">
-                                <label class="f-label" onclick="copiarCampo('vendedor2', this)">Vendedor *</label>
+                                <label class="f-label" onclick="copiarCampo('vendedor2', this)">Vendedor/a *</label>
                                 <input type="text" id="vendedor2" placeholder="Nombre...">
                             </div>
                             <div class="f-field">
@@ -864,7 +915,7 @@
                     <div id="chatContent3" class="val-content">
                         <div class="f-row">
                             <div class="f-field">
-                                <label class="f-label" onclick="copiarCampo('vendedor3', this)">Vendedor *</label>
+                                <label class="f-label" onclick="copiarCampo('vendedor3', this)">Vendedor/a *</label>
                                 <input type="text" id="vendedor3" placeholder="Nombre...">
                             </div>
                             <div class="f-field">
@@ -900,7 +951,7 @@
                     <button class="btn-foot" style="background:var(--success); color:#fff;" onclick="copiarHistorial()">Copiar todo</button>
                     <button id="btnEditHist" class="btn-foot" style="background:var(--accent); color:#fff;" onclick="editarHistorial()">Editar</button>
                     <button class="btn-foot" style="background:var(--warning); color:#000;" onclick="descargarHistorial()">Exportar .txt</button>
-                    <button class="btn-foot" style="background:var(--danger); color:#fff;" onclick="limpiarTodoHist()">Limpiar historial</button>
+                    <button class="btn-foot" style="background:var(--danger); color:#fff;" onclick="requestLimpiarTodoHist()">Limpiar historial</button>
                 </div>
             </div>
         </div>
@@ -913,8 +964,12 @@
             
             <div class="wp-tpl-container">
                 <div class="wp-search-row">
-                    <input type="text" id="wpSearchInput" class="wp-search-input" placeholder="Buscar plantilla..." oninput="filterWpTemplates()">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="wpSearchInput" class="wp-search-input" placeholder="Buscar plantilla..." oninput="filterWpTemplates()">
+                        <button type="button" class="btn-clear-search" id="btnWpSearchClear" onclick="clearWpSearch()">X</button>
+                    </div>
                     <button class="btn-wp-action" onclick="openWpModal()">+ Nueva</button>
+                    <button class="btn-wp-action btn-wp-secondary" onclick="requestDeleteAllWpTemplates()" title="Borrar todo">D.A</button>
                     <button class="btn-wp-action btn-wp-secondary" onclick="exportWpTemplates()" title="Exportar JSON">Exportar</button>
                     <input type="file" id="wpImportFile" style="display:none" accept=".json" onchange="importWpTemplates(event)">
                     <button class="btn-wp-action btn-wp-secondary" onclick="document.getElementById('wpImportFile').click()" title="Importar JSON">Importar</button>
@@ -937,7 +992,7 @@
                 <span class="label-mini" style="color: var(--danger); font-size:0.75rem; font-weight:bold;">IMPORTANTE / PRIORIDAD</span>
                 <div class="action-bar">
                     <button class="mini-btn" onclick="copyNote('imp')">Copiar</button>
-                    <button class="mini-btn" onclick="clearNote('imp')">Limpiar</button>
+                    <button class="mini-btn" onclick="requestClearNote('imp')">Limpiar</button>
                 </div>
             </div>
             <textarea id="note-imp" spellcheck="true" placeholder="Escribe aquí los pendientes críticos..."></textarea>
@@ -947,7 +1002,7 @@
                 <span class="label-mini" style="color: var(--success); font-size:0.75rem; font-weight:bold;">NOTAS BÁSICAS / PLANTILLAS</span>
                 <div class="action-bar">
                     <button class="mini-btn" onclick="copyNote('bas')">Copiar</button>
-                    <button class="mini-btn" onclick="clearNote('bas')">Limpiar</button>
+                    <button class="mini-btn" onclick="requestClearNote('bas')">Limpiar</button>
                 </div>
             </div>
             <textarea id="note-bas" spellcheck="true" placeholder="Anotaciones rápidas o textos frecuentes..."></textarea>
@@ -1054,7 +1109,7 @@
                 <button id="t3" class="tab-btn" onclick="showVal(3)">Excepciones</button>
             </div>
             <div id="v1" class="val-content active">
-                <div style="color: var(--accent); font-weight: bold; margin-bottom: 8px;">CAMBIO CONFIGURACIÓN COMERCIO</div>
+                <div style="color: var(--accent); font-weight: bold; margin-bottom: 8px;">CAMBIO CONFIGURACIÓN VENDEDOR/A</div>
                 <div class="step"><b>Razón Social</b> (Si tiene +1 ID, pedir Nombre Comercial).</div>
                 <div class="step"><b>RUC / DNI</b>.</div>
                 <div class="step">Foto selfie con y del <b>DNI</b>.</div>
@@ -1074,7 +1129,7 @@
                 <div class="step">Capacitaciones / Tipificaciones diversas.</div>
             </div>
             <div class="note-alert" style="border-left-color: var(--danger); background: rgba(255,23,68,0.08); color: var(--danger)">
-                <b>REGLA DE ORO:</b> Si el comercio no recuerda alguna información, solicitar <b>FOTO SELFIE</b>.
+                <b>REGLA DE ORO:</b> Si el vendedor/a no recuerda alguna información, solicitar <b>FOTO SELFIE</b>.
             </div>
         </div>
     </section>
@@ -1087,51 +1142,51 @@
 
             <div class="category-title">Consultas</div>
             <div class="grid-buttons">
-                <button class="btn-tip cat-consulta" onclick="copyTip('Comercio consulta por sus abonos. Se brinda información detallada según sistema.')">
+                <button class="btn-tip cat-consulta" onclick="copyTip('Vendedor/a consulta por sus abonos. Se brinda información detallada según sistema.')">
                     <b>Consulta abono</b>
                 </button>
-                <button class="btn-tip cat-consulta" onclick="copyTip('Comercio consulta por sus transacciones. Se valida estado en plataforma.')">
+                <button class="btn-tip cat-consulta" onclick="copyTip('Vendedor/a consulta por sus transacciones. Se valida estado en plataforma.')">
                     <b>Consulta transacciones</b>
                 </button>
-                <button class="btn-tip cat-consulta" onclick="copyTip('Comercio consulta por su ticket. Se brinda estado actual del requerimiento.')">
+                <button class="btn-tip cat-consulta" onclick="copyTip('Vendedor/a consulta por su ticket. Se brinda estado actual del requerimiento.')">
                     <b>Consulta estado de ticket</b>
                 </button>
-                <button class="btn-tip cat-consulta" onclick="copyTip('Comercio consulta por comisiones. Se procede a explicar el desglose de tasas vigentes.')">
+                <button class="btn-tip cat-consulta" onclick="copyTip('Vendedor/a consulta por comisiones. Se procede a explicar el desglose de tasas vigentes.')">
                     <b>Consulta comisiones</b>
                 </button>
             </div>
 
             <div class="category-title">Solicitudes</div>
             <div class="grid-buttons">
-                <button class="btn-tip cat-solicitud" onclick="copyTip('Comercio solicita cambiar correo electrónico.')">
+                <button class="btn-tip cat-solicitud" onclick="copyTip('Vendedor/a solicita cambiar correo electrónico.')">
                     <b>Solicitar cambiar correo</b>
                 </button>
-                <button class="btn-tip cat-solicitud" onclick="copyTip('Comercio solicita cambiar cuenta de banco.')">
+                <button class="btn-tip cat-solicitud" onclick="copyTip('Vendedor/a solicita cambiar cuenta de banco.')">
                     <b>Solicita cambiar cta de banco</b>
                 </button>
-                <button class="btn-tip cat-solicitud" onclick="copyTip('Comercio solicita contómetros. Se envía link de pago.')">
+                <button class="btn-tip cat-solicitud" onclick="copyTip('Vendedor/a solicita contómetros. Se envía link de pago.')">
                     <b>Solicita comprar contómetros</b>
                 </button>
-                <button class="btn-tip cat-solicitud" onclick="copyTip('Comercio solicita contómetros. Se genera solicitud de contómetros gratuitos.')">
+                <button class="btn-tip cat-solicitud" onclick="copyTip('Vendedor/a solicita contómetros. Se genera solicitud de contómetros gratuitos.')">
                     <b>Solicita contómetros gratuitos</b>
                 </button>
-                <button class="btn-tip cat-solicitud" onclick="copyTip('Comercio solicita comprobante. Se envía comprobante.')">
+                <button class="btn-tip cat-solicitud" onclick="copyTip('Vendedor/a solicita comprobante. Se envía comprobante.')">
                     <b>Solicita comprobante</b>
                 </button>
             </div>
 
             <div class="category-title">Reclamos / Incidencias</div>
             <div class="grid-buttons">
-                <button class="btn-tip cat-reclamo" onclick="copyTip('Comercio reclama por no haber recibido su abono. Se ingresa reclamo por medio de ticket.')">
+                <button class="btn-tip cat-reclamo" onclick="copyTip('Vendedor/a reclama por no haber recibido su abono. Se ingresa reclamo por medio de ticket.')">
                     <b>Reclamo por abono no realizado</b>
                 </button>
-                <button class="btn-tip cat-incidencia" onclick="copyTip('Comercio solicita visita técnica. Se genera reporte por falla de terminal.')">
+                <button class="btn-tip cat-incidencia" onclick="copyTip('Vendedor/a solicita visita técnica. Se genera reporte por falla de terminal.')">
                     <b>Incidente con visita</b>
                 </button>
-                <button class="btn-tip cat-incidencia" onclick="copyTip('Comercio corta llamada de forma imprevista. Se finaliza gestión.')">
+                <button class="btn-tip cat-incidencia" onclick="copyTip('Vendedor/a corta llamada de forma imprevista. Se finaliza gestión.')">
                     <b>Corta llamada</b>
                 </button>
-                <button class="btn-tip cat-incidencia" onclick="copyTip('Se libera llamada de comercio por no responder al contacto (Llamada silenciosa).')">
+                <button class="btn-tip cat-incidencia" onclick="copyTip('Se libera llamada de vendedor/a por no responder al contacto (Llamada silenciosa).')">
                     <b>Liberación de llamada</b>
                 </button>
             </div>
@@ -1217,11 +1272,11 @@
         <div id="seccionPlantilla" class="card" style="display:none; border: 2px solid var(--accent); background: rgba(59, 130, 246, 0.02);">
             <div class="plantilla-titulo" id="plantillaTitulo"></div>
             <div id="camposPlantilla"></div>
-            <button class="btn-copiar" id="btnCopiar" onclick="copiarPlantilla()">Copiar Plantilla</button>
+            <button class="btn-copiar" id="btnCopiar" onclick="copiarPlantilla()">COPIAR PLANTILLA</button>
         </div>
 
         <div class="card" id="camposBasicosContainer">
-            <div class="plantilla-titulo" style="text-align: center; color: var(--text);">Datos del Comercio</div>
+            <div class="plantilla-titulo" style="text-align: center; color: var(--text);">Datos del Vendedor/a</div>
             <div style="text-align: center; font-size: 0.8rem; color: var(--success); margin-bottom: 10px;">
                 Puedes pegar el texto de información directamente en cualquier campo para auto-rellenar.
             </div>
@@ -1260,11 +1315,32 @@
         </div>
 
         <div class="card" style="padding: 15px;">
-            <button class="btn-clear" onclick="limpiarTodoPlantillas()">LIMPIAR TODO</button>
+            <button class="btn-clear" onclick="requestLimpiarTodoPlantillas()">LIMPIAR TODO</button>
         </div>
     </section>
 
     <script>
+        // === LÓGICA DEL MODAL DE CONFIRMACIÓN GLOBAL ===
+        let confirmActionCallback = null;
+
+        function showConfirmModal(text, callback) {
+            document.getElementById('confirmModalText').innerText = text;
+            confirmActionCallback = callback;
+            document.getElementById('confirmModal').classList.add('active');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.remove('active');
+            confirmActionCallback = null;
+        }
+
+        document.getElementById('confirmModalBtn').addEventListener('click', () => {
+            if(confirmActionCallback) {
+                confirmActionCallback();
+            }
+            closeConfirmModal();
+        });
+
         // === GESTIÓN GLOBAL (Tema, Toast, Navegación) ===
         function toggleTheme() { 
             document.body.classList.toggle('light-mode'); 
@@ -1283,7 +1359,9 @@
         function switchTool(toolId, btn) {
             document.querySelectorAll('.tool-container').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.bubble').forEach(b => b.classList.remove('active'));
-            document.getElementById('tool-' + toolId).classList.add('active');
+            
+            const target = document.getElementById('tool-' + toolId);
+            target.classList.add('active');
             if(btn) btn.classList.add('active');
         }
 
@@ -1357,17 +1435,14 @@
         // === LÓGICA DASHBOARD Y SCROLL MOUSE ===
         let currentCountdownIndex = 1;
         
-        // Manejador del evento wheel (rueda del ratón) para cambiar el carrusel
         document.addEventListener('DOMContentLoaded', () => {
             const carouselArea = document.getElementById('mainCarouselArea');
             if(carouselArea) {
                 carouselArea.addEventListener('wheel', function(e) {
-                    e.preventDefault(); // Evitar scroll de la pagina si esta en el area
+                    e.preventDefault(); 
                     if (e.deltaY > 0) {
-                        // Scroll hacia abajo
                         rotateCountdown(1);
                     } else if (e.deltaY < 0) {
-                        // Scroll hacia arriba
                         rotateCountdown(-1);
                     }
                 }, { passive: false });
@@ -1456,10 +1531,8 @@
 
         function toggleChatTimer(chatId) {
             const btn = document.getElementById(`btn-chat${chatId}`);
-            const tabWrapper = document.getElementById(`tab-wrapper-${chatId}`);
             
             if (chatTimers[chatId] && chatTimers[chatId].interval) {
-                // Pausar o resetear
                 clearInterval(chatTimers[chatId].interval);
                 btn.classList.remove('active');
                 btn.innerText = "5m";
@@ -1467,7 +1540,6 @@
                 chatTimers[chatId].interval = null;
                 chatTimers[chatId].timeLeft = 300; 
             } else {
-                // Iniciar
                 let timeLeft = 300; 
                 
                 if(chatTimers[chatId] && chatTimers[chatId].timeLeft) {
@@ -1550,7 +1622,7 @@
             contentDiv.innerHTML = `
                 <div class="f-row">
                     <div class="f-field">
-                        <label class="f-label" onclick="copiarCampo('vendedor${newId}', this)">Vendedor *</label>
+                        <label class="f-label" onclick="copiarCampo('vendedor${newId}', this)">Vendedor/a *</label>
                         <input type="text" id="vendedor${newId}" placeholder="Nombre...">
                     </div>
                     <div class="f-field">
@@ -1606,7 +1678,6 @@
             const tickEl = document.getElementById('ticket' + chatIndex);
             const motEl = document.getElementById('motivo' + chatIndex);
 
-            // Validacion de campos obligatorios
             let hasError = false;
             
             [vendedorEl, docEl, idEl, motEl].forEach(el => {
@@ -1628,14 +1699,13 @@
             
             const d = docEl.value.trim();
             const horaNow = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            let t = (d.length === 8) ? "DNI" : (d.startsWith("10")) ? "RUC 10" : "RUC 20";
             
             let vendInfo = "";
             if (vendedorEl && vendedorEl.value.trim() !== "") {
-                vendInfo = `VENDEDOR: ${vendedorEl.value.trim()}\n`;
+                vendInfo = `VENDEDOR/A: ${vendedorEl.value.trim()}\n`;
             }
             
-            const nuevaEntrada = `[${horaNow}] Comercio ${nAtt} (Chat ${chatIndex})\n${vendInfo}TIPO: ${t}\nNRO DOC: ${d}\nID: ${idEl.value || "N/A"}\nTICKET: ${tickEl.value || "N/A"}\nMOTIVO: ${motEl.value || "..."}`;
+            const nuevaEntrada = `[${horaNow}] (Chat ${chatIndex})\n${vendInfo}Matrícula / Código: ${idEl.value || "N/A"}\nTICKET: ${tickEl.value || "N/A"}\nMOTIVO: ${motEl.value || "..."}`;
             
             hits.push(nuevaEntrada); 
             nAtt++; 
@@ -1711,8 +1781,8 @@
             .then(() => { showToast('Exportado en local y Drive!', 'verde'); })
             .catch(error => { console.error(error); showToast('ALERTA: Falló el guardado en Drive!', 'rojo'); });
         }
-        function limpiarTodoHist() { 
-            if(confirm("¿Estás seguro de borrar todo el historial y reiniciar el contador?")){ 
+        function requestLimpiarTodoHist() {
+            showConfirmModal("¿Estás seguro de borrar todo el historial y reiniciar el contador?", () => {
                 hits=[]; nAtt=1; isEditing = false; 
                 localStorage.removeItem('c-hits'); localStorage.removeItem('c-natt'); 
                 const btn = document.getElementById('btnEditHist');
@@ -1720,7 +1790,7 @@
                 btn.style.background = "var(--accent)"; 
                 btn.style.color = "#fff";
                 renderH(); 
-            } 
+            });
         }
 
         /* === GESTIÓN DE PLANTILLAS WP === */
@@ -1737,7 +1807,7 @@
             list.innerHTML = '';
             
             if (templatesToRender.length === 0) {
-                list.innerHTML = '<div style="text-align:center; padding:10px; color:var(--text-dim); font-size:1rem;">No hay plantillas guardadas. Agrega una nueva o importa un archivo JSON.</div>';
+                list.innerHTML = '<div style="text-align:center; padding:10px; color:var(--text-dim); font-size:1rem;">No hay plantillas guardadas que coincidan con la búsqueda.</div>';
                 return;
             }
 
@@ -1807,13 +1877,55 @@
         }
 
         function filterWpTemplates() {
-            const query = document.getElementById('wpSearchInput').value.toLowerCase();
-            const filtered = wpTemplates.filter(tpl => {
-                const titleMatch = (tpl.title || '').toLowerCase().includes(query);
-                const variantMatch = tpl.variants.some(v => v.toLowerCase().includes(query));
-                return titleMatch || variantMatch;
+            const inputEl = document.getElementById('wpSearchInput');
+            const clearBtn = document.getElementById('btnWpSearchClear');
+            const query = inputEl.value.toLowerCase().trim();
+            
+            if(inputEl.value.length > 0) {
+                clearBtn.style.display = 'block';
+            } else {
+                clearBtn.style.display = 'none';
+            }
+            
+            if (!query) {
+                renderWpTemplates(wpTemplates);
+                return;
+            }
+
+            const searchWords = query.split(/\s+/); 
+            
+            const filtered = [];
+
+            wpTemplates.forEach(tpl => {
+                const titleLower = (tpl.title || '').toLowerCase();
+                
+                const matchesAllWords = (text) => {
+                    return searchWords.every(word => text.includes(word));
+                };
+
+                if (matchesAllWords(titleLower)) {
+                    filtered.push(tpl);
+                    return; 
+                }
+
+                const matchingVariants = tpl.variants.filter(v => matchesAllWords(v.toLowerCase()));
+                
+                if (matchingVariants.length > 0) {
+                    filtered.push({
+                        ...tpl,
+                        variants: matchingVariants
+                    });
+                }
             });
+
             renderWpTemplates(filtered);
+        }
+        
+        function clearWpSearch() {
+            const inputEl = document.getElementById('wpSearchInput');
+            inputEl.value = '';
+            filterWpTemplates(); 
+            inputEl.focus(); 
         }
 
         function copyWpTemplate(text) {
@@ -1828,7 +1940,7 @@
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="font-size:0.8rem; font-weight:bold; color:var(--text-dim); text-transform:uppercase;">Variante</span>
                     <button type="button" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:0.9rem; display:flex; align-items:center;" onclick="this.parentElement.parentElement.remove()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        X ELIMINAR
                     </button>
                 </div>
                 <textarea class="modal-textarea variant-textarea" placeholder="Escribe el contenido..." style="min-height:80px;">${value}</textarea>
@@ -1863,7 +1975,7 @@
                 
                 <div class="modal-actions">
                     <div class="modal-actions-left">
-                         <button type="button" class="btn-modal btn-modal-delete" style="${id ? '' : 'display:none;'}" onclick="deleteCurrentWpTemplate()">ELIMINAR</button>
+                         <button type="button" class="btn-modal btn-modal-delete" style="${id ? '' : 'display:none;'}" onclick="requestDeleteCurrentWpTemplate()">ELIMINAR</button>
                     </div>
                     <button class="btn-modal btn-modal-cancel" onclick="closeWpModal()">CANCELAR</button>
                     <button class="btn-modal btn-modal-save" onclick="saveWpTemplate()">GUARDAR</button>
@@ -1903,22 +2015,36 @@
             }
             
             localStorage.setItem('c-wp-tpl', JSON.stringify(wpTemplates));
-            renderWpTemplates();
+            filterWpTemplates(); 
             closeWpModal();
             showToast('Plantilla guardada', 'verde');
         }
 
-        function deleteCurrentWpTemplate() {
+        function requestDeleteCurrentWpTemplate() {
             const id = document.getElementById('wpModalId').value;
             if (!id) return;
             
-            if (confirm('¿Estás seguro de eliminar esta plantilla permanentemente?')) {
+            showConfirmModal('¿Estás seguro de eliminar esta plantilla permanentemente?', () => {
                 wpTemplates = wpTemplates.filter(t => t.id !== id);
                 localStorage.setItem('c-wp-tpl', JSON.stringify(wpTemplates));
-                renderWpTemplates();
+                filterWpTemplates(); 
                 closeWpModal();
                 showToast('Plantilla eliminada', 'verde');
+            });
+        }
+        
+        function requestDeleteAllWpTemplates() {
+            if (wpTemplates.length === 0) {
+                showToast('No hay plantillas para borrar', 'naranja');
+                return;
             }
+            
+            showConfirmModal('ADVERTENCIA: ¿Estás seguro de borrar TODAS las plantillas del Módulo 2? Esta acción no se puede deshacer.', () => {
+                wpTemplates = [];
+                localStorage.setItem('c-wp-tpl', JSON.stringify(wpTemplates));
+                filterWpTemplates(); 
+                showToast('Todas las plantillas fueron eliminadas', 'verde');
+            });
         }
 
         function exportWpTemplates() {
@@ -1964,8 +2090,9 @@
                             }
                         });
                         localStorage.setItem('c-wp-tpl', JSON.stringify(wpTemplates));
-                        renderWpTemplates();
+                        filterWpTemplates(); 
                         document.getElementById('wpSearchInput').value = '';
+                        document.getElementById('btnWpSearchClear').style.display = 'none';
                         showToast(`${added} plantillas importadas`, 'verde');
                     } else {
                         alert('Formato de JSON inválido.');
@@ -1980,7 +2107,11 @@
 
         // === LÓGICA NOTAS ===
         function copyNote(type) { const text = document.getElementById('note-' + type); if (!text.value) return; text.select(); document.execCommand('copy'); showToast('¡Nota copiada!', 'verde'); }
-        function clearNote(type) { if(confirm('¿Estás seguro de borrar este bloque?')) { document.getElementById('note-' + type).value = ''; } }
+        function requestClearNote(type) { 
+            showConfirmModal('¿Estás seguro de borrar este bloque de notas?', () => {
+                document.getElementById('note-' + type).value = ''; 
+            });
+        }
 
         // === LÓGICA SOPORTE ===
         function showVal(num) { document.querySelectorAll('.val-content').forEach(el => el.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active')); document.getElementById('v' + num).classList.add('active'); document.getElementById('t' + num).classList.add('active'); }
@@ -2010,10 +2141,10 @@
 
         // === LÓGICA PLANTILLAS ===
         const PLANTILLAS = {
-            cbancaria: { titulo: 'Cuenta Bancaria', tipo: 'simple', campos: [{ id: 'cb_nombre', label: 'NOMBRE', basico: 'b_nombre' }, { id: 'cb_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'cb_id', label: 'ID', basico: 'b_id' }, { id: 'cb_telefono', label: 'N Celular de contacto', basico: 'b_telefono' }, { id: 'cb_comercio', label: 'Nombre del comercio' }, { id: 'cb_banco', label: 'Nombre del banco' }, { id: 'cb_ncuenta', label: 'Numero de cuenta bancaria' }, { id: 'cb_cci', label: 'Numero de CCI' }, { id: 'cb_tcuenta', label: 'Tipo de cuenta bancaria' }, { id: 'cb_moneda', label: 'Tipo de moneda' }, { id: 'cb_titular', label: 'Nombre de la titularidad' }] },
-            redpos: { titulo: 'RedPOS', tipo: 'redpos', preguntas: [{ id: 'rp_p1', num: '1.', label: 'Descripción del problema principal:', prefijo: 'Comercio indica que ', textarea: true }, { id: 'rp_p2', num: '2.', label: '¿Qué acción o proceso realizaba el comercio cuando ocurrió?', prefijo: 'El comercio estaba realizando ', textarea: true }, { id: 'rp_p3', num: '3.', label: '¿Cuál fue el impacto generado?', prefijo: 'Dado el inconveniente, el comercio ', textarea: true }, { id: 'rp_p4', num: '4.', label: '¿Cuáles fueron los descartes y validaciones realizadas por el asesor?', prefijo: 'Se realizó ', textarea: true }, { id: 'rp_p5_fijo', num: '5.', label: 'Adjuntar evidencias', fijo: 'Si', textarea: false }, { id: 'rp_p6', num: '6.', label: '¿Qué solución espera el comercio?', prefijo: 'La necesidad esencial es que ', textarea: true }, { id: 'rp_p7_fijo', num: '7.', label: '¿Qué información adicional se necesita para la resolución?', fijo: 'N.A', textarea: false }, { id: 'rp_p8_fijo', num: '8.', label: 'Tickets previos relacionados:', fijo: 'N.A', textarea: false }], basicos: [{ id: 'rp_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'rp_id', label: 'ID', basico: 'b_id' }, { id: 'rp_nombre', label: 'Nombre', basico: 'b_nombre' }, { id: 'rp_correo', label: 'Correo', basico: 'b_correo' }, { id: 'rp_telefono', label: 'Teléfono', basico: 'b_telefono' }, { id: 'rp_terminal', label: 'Terminal', basico: 'b_terminal' }] },
-            contometros: { titulo: 'Compra Contómetros', tipo: 'contometros', campos: [{ id: 'ct_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'ct_id', label: 'ID', basico: 'b_id' }, { id: 'ct_nombre', label: 'Nombre', basico: 'b_nombre' }, { id: 'ct_correo', label: 'Correo', basico: 'b_correo' }, { id: 'ct_solicita', label: 'COMERCIO SOLICITA CONTOMETROS' }, { id: 'ct_dir', label: 'DIRECCION' }, { id: 'ct_ref', label: 'REFERENCIA' }, { id: 'ct_horario', label: 'HORARIO DE ATENCION' }, { id: 'ct_celular', label: 'CELULAR', basico: 'b_telefono' }, { id: 'ct_encargado', label: 'PERSONA ENCARGADA' }] },
-            gratis_contometros: { titulo: 'Gratis Contómetros', tipo: 'gratis_contometros', campos: [{ id: 'gc_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'gc_id', label: 'ID', basico: 'b_id' }, { id: 'gc_nombre', label: 'Nombre', basico: 'b_nombre' }, { id: 'gc_correo', label: 'Correo', basico: 'b_correo' }, { id: 'gc_solicita', label: 'COMERCIO SOLICITA CONTOMETROS' }, { id: 'gc_dir', label: 'DIRECCION' }, { id: 'gc_ref', label: 'REFERENCIA' }, { id: 'gc_horario', label: 'HORARIO DE ATENCION' }, { id: 'gc_celular', label: 'CELULAR', basico: 'b_telefono' }, { id: 'gc_encargado', label: 'PERSONA ENCARGADA' }] },
+            cbancaria: { titulo: 'Cuenta Bancaria', tipo: 'simple', campos: [{ id: 'cb_nombre', label: 'NOMBRE', basico: 'b_nombre' }, { id: 'cb_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'cb_id', label: 'ID', basico: 'b_id' }, { id: 'cb_telefono', label: 'N Celular de contacto', basico: 'b_telefono' }, { id: 'cb_comercio', label: 'Nombre del vendedor/a' }, { id: 'cb_banco', label: 'Nombre del banco' }, { id: 'cb_ncuenta', label: 'Numero de cuenta bancaria' }, { id: 'cb_cci', label: 'Numero de CCI' }, { id: 'cb_tcuenta', label: 'Tipo de cuenta bancaria' }, { id: 'cb_moneda', label: 'Tipo de moneda' }, { id: 'cb_titular', label: 'Nombre de la titularidad' }] },
+            redpos: { titulo: 'RedPOS', tipo: 'redpos', preguntas: [{ id: 'rp_p1', num: '1.', label: 'Descripción del problema principal:', prefijo: 'Vendedor/a indica que ', textarea: true }, { id: 'rp_p2', num: '2.', label: '¿Qué acción o proceso realizaba el vendedor/a cuando ocurrió?', prefijo: 'El vendedor/a estaba realizando ', textarea: true }, { id: 'rp_p3', num: '3.', label: '¿Cuál fue el impacto generado?', prefijo: 'Dado el inconveniente, el vendedor/a ', textarea: true }, { id: 'rp_p4', num: '4.', label: '¿Cuáles fueron los descartes y validaciones realizadas por el asesor?', prefijo: 'Se realizó ', textarea: true }, { id: 'rp_p5_fijo', num: '5.', label: 'Adjuntar evidencias', fijo: 'Si', textarea: false }, { id: 'rp_p6', num: '6.', label: '¿Qué solución espera el vendedor/a?', prefijo: 'La necesidad esencial es que ', textarea: true }, { id: 'rp_p7_fijo', num: '7.', label: '¿Qué información adicional se necesita para la resolución?', fijo: 'N.A', textarea: false }, { id: 'rp_p8_fijo', num: '8.', label: 'Tickets previos relacionados:', fijo: 'N.A', textarea: false }], basicos: [{ id: 'rp_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'rp_id', label: 'ID', basico: 'b_id' }, { id: 'rp_nombre', label: 'Nombre', basico: 'b_nombre' }, { id: 'rp_correo', label: 'Correo', basico: 'b_correo' }, { id: 'rp_telefono', label: 'Teléfono', basico: 'b_telefono' }, { id: 'rp_terminal', label: 'Terminal', basico: 'b_terminal' }] },
+            contometros: { titulo: 'Compra Contómetros', tipo: 'contometros', campos: [{ id: 'ct_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'ct_id', label: 'ID', basico: 'b_id' }, { id: 'ct_nombre', label: 'Nombre', basico: 'b_nombre' }, { id: 'ct_correo', label: 'Correo', basico: 'b_correo' }, { id: 'ct_solicita', label: 'VENDEDOR/A SOLICITA CONTOMETROS' }, { id: 'ct_dir', label: 'DIRECCION' }, { id: 'ct_ref', label: 'REFERENCIA' }, { id: 'ct_horario', label: 'HORARIO DE ATENCION' }, { id: 'ct_celular', label: 'CELULAR', basico: 'b_telefono' }, { id: 'ct_encargado', label: 'PERSONA ENCARGADA' }] },
+            gratis_contometros: { titulo: 'Gratis Contómetros', tipo: 'gratis_contometros', campos: [{ id: 'gc_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'gc_id', label: 'ID', basico: 'b_id' }, { id: 'gc_nombre', label: 'Nombre', basico: 'b_nombre' }, { id: 'gc_correo', label: 'Correo', basico: 'b_correo' }, { id: 'gc_solicita', label: 'VENDEDOR/A SOLICITA CONTOMETROS' }, { id: 'gc_dir', label: 'DIRECCION' }, { id: 'gc_ref', label: 'REFERENCIA' }, { id: 'gc_horario', label: 'HORARIO DE ATENCION' }, { id: 'gc_celular', label: 'CELULAR', basico: 'b_telefono' }, { id: 'gc_encargado', label: 'PERSONA ENCARGADA' }] },
             correo: { titulo: 'Correo', tipo: 'correo', campos: [{ id: 'co_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'co_id', label: 'ID', basico: 'b_id' }, { id: 'co_nombre', label: 'Nombre', basico: 'b_nombre' }, { id: 'co_correo', label: 'Correo', basico: 'b_correo' }, { id: 'co_telefono', label: 'Teléfono', basico: 'b_telefono' }, { id: 'co_terminal', label: 'Terminal', basico: 'b_terminal' }, { id: 'co_dice', label: 'Dice' }, { id: 'co_debeDecir', label: 'Debe decir' }] },
             cabono: { titulo: 'C.Abono', tipo: 'cabono', campos: [{ id: 'ca_motivo', label: 'Motivo' }, { id: 'ca_cambio', label: 'Cambio de' }, { id: 'ca_ruc', label: 'RUC', basico: 'b_ruc' }, { id: 'ca_id', label: 'ID', basico: 'b_id' }, { id: 'ca_nombre', label: 'Nombre', basico: 'b_nombre' }, { id: 'ca_correo', label: 'Correo', basico: 'b_correo' }, { id: 'ca_telefono', label: 'Teléfono', basico: 'b_telefono' }, { id: 'ca_terminal', label: 'Terminal', basico: 'b_terminal' }] }
         };
@@ -2022,7 +2153,7 @@
         document.addEventListener('paste', function(e) {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
                 const texto = e.clipboardData.getData('text');
-                if (texto.includes('Razón social') || texto.includes('Número de documento') || texto.includes('Detalle de comercio')) {
+                if (texto.includes('Razón social') || texto.includes('Número de documento') || texto.includes('Detalle de vendedor/a')) {
                     e.preventDefault();
                     const setValor = (baseId, valor) => {
                         if (!valor) return;
@@ -2066,7 +2197,7 @@
         function mkVertical(c) { const wrap = document.createElement('div'); wrap.className = 'campo-vertical'; const lbl = document.createElement('label'); lbl.textContent = c.label + ':'; lbl.setAttribute('for', c.id); const input = document.createElement('input'); input.type = 'text'; input.id = c.id; input.placeholder = c.label; if (c.basico) { const val = document.getElementById(c.basico)?.value || ''; if (val) input.value = val; } wrap.appendChild(lbl); wrap.appendChild(input); return wrap; }
         function mkInline(c) { const row = document.createElement('div'); row.className = 'campo-row'; const lbl = document.createElement('label'); lbl.textContent = c.label + ':'; lbl.setAttribute('for', c.id); const input = document.createElement('input'); input.type = 'text'; input.id = c.id; input.placeholder = c.label; if (c.basico) { const val = document.getElementById(c.basico)?.value || ''; if (val) input.value = val; } row.appendChild(lbl); row.appendChild(input); return row; }
 
-        function renderSimple(p, contenedor) { const cab = document.createElement('div'); cab.className = 'texto-fijo-bloque'; cab.textContent = 'Estimados, se actualiza cuenta de banco en 1era linea según lo solicitado por el comercio:'; contenedor.appendChild(cab); p.campos.forEach(c => contenedor.appendChild(mkVertical(c))); }
+        function renderSimple(p, contenedor) { const cab = document.createElement('div'); cab.className = 'texto-fijo-bloque'; cab.textContent = 'Estimados, se actualiza cuenta de banco en 1era linea según lo solicitado por el vendedor/a:'; contenedor.appendChild(cab); p.campos.forEach(c => contenedor.appendChild(mkVertical(c))); }
         function renderRedPOS(p, contenedor) {
             p.preguntas.forEach(q => {
                 const bloque = document.createElement('div'); bloque.className = 'campo-pregunta'; const lbl = document.createElement('span'); lbl.className = 'pregunta-label'; lbl.textContent = q.num + ' ' + q.label; bloque.appendChild(lbl);
@@ -2074,11 +2205,11 @@
                 else { const ta = document.createElement('textarea'); ta.id = q.id; ta.rows = 1; ta.value = q.prefijo; ta.oninput = function () { autoAjustar(this); }; ta.addEventListener('focus', function () { if (this.value === q.prefijo) this.setSelectionRange(q.prefijo.length, q.prefijo.length); }); setTimeout(() => autoAjustar(ta), 0); bloque.appendChild(ta); }
                 contenedor.appendChild(bloque);
             });
-            const sep = document.createElement('hr'); sep.className = 'plantilla-sep'; contenedor.appendChild(sep); const tit = document.createElement('div'); tit.className = 'plantilla-titulo'; tit.style.marginTop = '2px'; tit.textContent = 'Datos del comercio'; contenedor.appendChild(tit); p.basicos.forEach(c => contenedor.appendChild(mkInline(c)));
+            const sep = document.createElement('hr'); sep.className = 'plantilla-sep'; contenedor.appendChild(sep); const tit = document.createElement('div'); tit.className = 'plantilla-titulo'; tit.style.marginTop = '2px'; tit.textContent = 'Datos del vendedor/a'; contenedor.appendChild(tit); p.basicos.forEach(c => contenedor.appendChild(mkInline(c)));
         }
         function renderContometros(p, contenedor) {
             const cab1 = document.createElement('div'); cab1.className = 'texto-fijo-bloque'; cab1.textContent = 'Estimados, por favor su apoyo con lo siguiente:'; contenedor.appendChild(cab1);
-            const cab2 = document.createElement('div'); cab2.className = 'texto-fijo-bloque'; cab2.textContent = 'Motivo de la derivación: Comercio se comunica para poder solicitar contómetros, se valida que no hay campaña de contómetros gratis, por lo que se genera y envía link de pago.'; contenedor.appendChild(cab2);
+            const cab2 = document.createElement('div'); cab2.className = 'texto-fijo-bloque'; cab2.textContent = 'Motivo de la derivación: Vendedor/a se comunica para poder solicitar contómetros, se valida que no hay campaña de contómetros gratis, por lo que se genera y envía link de pago.'; contenedor.appendChild(cab2);
             p.campos.forEach((c, i) => { if (i === 2 || i === 4 || i === 5) { const sep = document.createElement('hr'); sep.className = 'plantilla-sep'; contenedor.appendChild(sep); } contenedor.appendChild(mkVertical(c)); });
             const sep2 = document.createElement('hr'); sep2.className = 'plantilla-sep'; contenedor.appendChild(sep2); const pie = document.createElement('div'); pie.className = 'texto-fijo-bloque'; pie.textContent = 'Tickets previos: No cuenta con tickets previos.'; contenedor.appendChild(pie);
         }
@@ -2088,7 +2219,7 @@
             const sep2 = document.createElement('hr'); sep2.className = 'plantilla-sep'; contenedor.appendChild(sep2); const pie = document.createElement('div'); pie.className = 'texto-fijo-bloque'; pie.textContent = 'Tickets previos: No cuenta con tickets previos.'; contenedor.appendChild(pie);
         }
         function renderCorreo(p, contenedor) {
-            const cab = document.createElement('div'); cab.className = 'texto-fijo-bloque'; cab.textContent = 'Estimados, comercio solicita cambio de correo y se atiende en 1era linea.'; contenedor.appendChild(cab);
+            const cab = document.createElement('div'); cab.className = 'texto-fijo-bloque'; cab.textContent = 'Estimados, vendedor/a solicita cambio de correo y se atiende en 1era linea.'; contenedor.appendChild(cab);
             const sep0 = document.createElement('hr'); sep0.className = 'plantilla-sep'; contenedor.appendChild(sep0);
             ['co_ruc', 'co_id', 'co_nombre', 'co_correo', 'co_telefono', 'co_terminal'].forEach(id => { const c = p.campos.find(x => x.id === id); contenedor.appendChild(mkInline(c)); });
             const sep1 = document.createElement('hr'); sep1.className = 'plantilla-sep'; contenedor.appendChild(sep1); const pie0 = document.createElement('div'); pie0.className = 'texto-fijo-bloque'; pie0.textContent = 'Tickets previos relacionados: NO'; contenedor.appendChild(pie0);
@@ -2109,67 +2240,62 @@
         function copiarPlantilla() {
             if (!plantillaActiva) return;
             const v = id => (document.getElementById(id)?.value || '').trim(); let texto = '';
-            if (plantillaActiva === 'cbancaria') { texto = 'Estimados, se actualiza cuenta de banco en 1era linea según lo solicitado por el comercio:\n\n' + 'NOMBRE: ' + v('cb_nombre') + '\nRUC: ' + v('cb_ruc') + '\nID: ' + v('cb_id') + '\nN Celular de contacto: ' + v('cb_telefono') + '\nPaso la validación Nivel 1\n' + 'Datos de la cuenta bancaria:\nNombre del comercio: ' + v('cb_comercio') + '\nNombre del banco: ' + v('cb_banco') + '\nNumero de cuenta bancaria: ' + v('cb_ncuenta') + '\nNumero de CCI: ' + v('cb_cci') + '\nTipo de cuenta bancaria: ' + v('cb_tcuenta') + '\nTipo de moneda: ' + v('cb_moneda') + '\nNombre de la titularidad: ' + v('cb_titular') + '\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
+            if (plantillaActiva === 'cbancaria') { texto = 'Estimados, se actualiza cuenta de banco en 1era linea según lo solicitado por el vendedor/a:\n\n' + 'NOMBRE: ' + v('cb_nombre') + '\nRUC: ' + v('cb_ruc') + '\nID: ' + v('cb_id') + '\nN Celular de contacto: ' + v('cb_telefono') + '\nPaso la validación Nivel 1\n' + 'Datos de la cuenta bancaria:\nNombre del vendedor/a: ' + v('cb_comercio') + '\nNombre del banco: ' + v('cb_banco') + '\nNumero de cuenta bancaria: ' + v('cb_ncuenta') + '\nNumero de CCI: ' + v('cb_cci') + '\nTipo de cuenta bancaria: ' + v('cb_tcuenta') + '\nTipo de moneda: ' + v('cb_moneda') + '\nNombre de la titularidad: ' + v('cb_titular') + '\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
             if (plantillaActiva === 'redpos') { const p = PLANTILLAS.redpos; let bloque = ''; p.preguntas.forEach(q => { bloque += q.num + ' ' + q.label + '\n' + (q.fijo ? q.fijo : v(q.id)) + '\n\n'; }); texto = 'Estimados, su apoyo con lo siguiente, por favor:\n\n' + bloque.trimEnd() + '\n\n' + 'RUC: ' + v('rp_ruc') + '\nID: ' + v('rp_id') + '\nNombre: ' + v('rp_nombre') + '\nCorreo: ' + v('rp_correo') + '\nTeléfono: ' + v('rp_telefono') + '\nTerminal: ' + v('rp_terminal') + '\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
-            if (plantillaActiva === 'contometros') { texto = 'Estimados, por favor su apoyo con lo siguiente:\n\n' + 'Motivo de la derivación: Comercio se comunica para poder solicitar contómetros, se valida que no hay campaña de contómetros gratis, por lo que se genera y envía link de pago.\n\n' + 'RUC: ' + v('ct_ruc') + '\nID: ' + v('ct_id') + '\n\nNombre: ' + v('ct_nombre') + '\nCorreo: ' + v('ct_correo') + '\n\nCOMERCIO SOLICITA CONTOMETROS: ' + v('ct_solicita') + '\n\n' + 'DIRECCION: ' + v('ct_dir') + '\nREFERENCIA: ' + v('ct_ref') + '\nHORARIO DE ATENCION: ' + v('ct_horario') + '\nCELULAR: ' + v('ct_celular') + '\nPERSONA ENCARGADA: ' + v('ct_encargado') + '\n\n' + 'Tickets previos: No cuenta con tickets previos.\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
-            if (plantillaActiva === 'gratis_contometros') { texto = 'Estimados, se genera solicitud de contómetros gratuitos:\n\n' + 'RUC: ' + v('gc_ruc') + '\nID: ' + v('gc_id') + '\n\nNombre: ' + v('gc_nombre') + '\nCorreo: ' + v('gc_correo') + '\n\nCOMERCIO SOLICITA CONTOMETROS: ' + v('gc_solicita') + '\n\n' + 'DIRECCION: ' + v('gc_dir') + '\nREFERENCIA: ' + v('gc_ref') + '\nHORARIO DE ATENCION: ' + v('gc_horario') + '\nCELULAR: ' + v('gc_celular') + '\nPERSONA ENCARGADA: ' + v('gc_encargado') + '\n\n' + 'Tickets previos: No cuenta con tickets previos.\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
-            if (plantillaActiva === 'correo') { texto = 'Estimados, comercio solicita cambio de correo y se atiende en 1era linea.\n\n' + 'RUC: ' + v('co_ruc') + '\nID: ' + v('co_id') + '\nNombre: ' + v('co_nombre') + '\nCorreo: ' + v('co_correo') + '\nTeléfono: ' + v('co_telefono') + '\nTerminal: ' + v('co_terminal') + '\n\nTickets previos relacionados: NO\n\n' + 'Dice: ' + v('co_dice') + '\nDebe decir: ' + v('co_debeDecir') + '\n\nPasa validación Nivel1\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
+            if (plantillaActiva === 'contometros') { texto = 'Estimados, por favor su apoyo con lo siguiente:\n\n' + 'Motivo de la derivación: Vendedor/a se comunica para poder solicitar contómetros, se valida que no hay campaña de contómetros gratis, por lo que se genera y envía link de pago.\n\n' + 'RUC: ' + v('ct_ruc') + '\nID: ' + v('ct_id') + '\n\nNombre: ' + v('ct_nombre') + '\nCorreo: ' + v('ct_correo') + '\n\nVENDEDOR/A SOLICITA CONTOMETROS: ' + v('ct_solicita') + '\n\n' + 'DIRECCION: ' + v('ct_dir') + '\nREFERENCIA: ' + v('ct_ref') + '\nHORARIO DE ATENCION: ' + v('ct_horario') + '\nCELULAR: ' + v('ct_celular') + '\nPERSONA ENCARGADA: ' + v('ct_encargado') + '\n\n' + 'Tickets previos: No cuenta con tickets previos.\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
+            if (plantillaActiva === 'gratis_contometros') { texto = 'Estimados, se genera solicitud de contómetros gratuitos:\n\n' + 'RUC: ' + v('gc_ruc') + '\nID: ' + v('gc_id') + '\n\nNombre: ' + v('gc_nombre') + '\nCorreo: ' + v('gc_correo') + '\n\nVENDEDOR/A SOLICITA CONTOMETROS: ' + v('gc_solicita') + '\n\n' + 'DIRECCION: ' + v('gc_dir') + '\nREFERENCIA: ' + v('gc_ref') + '\nHORARIO DE ATENCION: ' + v('gc_horario') + '\nCELULAR: ' + v('gc_celular') + '\nPERSONA ENCARGADA: ' + v('gc_encargado') + '\n\n' + 'Tickets previos: No cuenta con tickets previos.\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
+            if (plantillaActiva === 'correo') { texto = 'Estimados, vendedor/a solicita cambio de correo y se atiende en 1era linea.\n\n' + 'RUC: ' + v('co_ruc') + '\nID: ' + v('co_id') + '\nNombre: ' + v('co_nombre') + '\nCorreo: ' + v('co_correo') + '\nTeléfono: ' + v('co_telefono') + '\nTerminal: ' + v('co_terminal') + '\n\nTickets previos relacionados: NO\n\n' + 'Dice: ' + v('co_dice') + '\nDebe decir: ' + v('co_debeDecir') + '\n\nPasa validación Nivel1\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
             if (plantillaActiva === 'cabono') { texto = 'Estimados, su apoyo con lo siguiente, por favor: Cliente solicita cambiar el tipo de abono, ' + v('ca_motivo') + '\n\n' + 'Cambio de ' + v('ca_cambio') + '\n\n' + 'RUC: ' + v('ca_ruc') + '\nID: ' + v('ca_id') + '\nNombre: ' + v('ca_nombre') + '\nCorreo: ' + v('ca_correo') + '\nTeléfono: ' + v('ca_telefono') + '\nTerminal: ' + v('ca_terminal') + '\n\nValidación Nivel 1\n\nTickets previos relacionados: NO\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; }
-            copiarTextoP(texto, 'verde', 'Copiado!');
+            copiarTextoP(texto, 'verde', 'COPIADO!');
         }
 
-        function copiarSolicitud() { const v = id => (document.getElementById(id)?.value || '').trim(); const texto = 'Estimados, su apoyo con lo siguiente, por favor:\n\n' + 'RUC: ' + v('b_ruc') + '\nID: ' + v('b_id') + '\nNombre: ' + v('b_nombre') + '\nCorreo: ' + v('b_correo') + '\nTeléfono: ' + v('b_telefono') + '\nTerminal: ' + v('b_terminal') + '\n\nTickets previos relacionados: NO\nPASA VALIDACION N1/N2\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; copiarTextoP(texto, 'azul', 'Solicitud copiada!'); }
-        function copiarReclamo() { const v = id => (document.getElementById(id)?.value || '').trim(); const texto = 'Estimados, su apoyo, por favor, comercio indica el siguiente reclamo:\n\n' + '1. Descripción del problema principal:\nComercio reclama por\n\n' + '2. ¿Qué acción o proceso realizaba el comercio cuando ocurrió?\nRealizando\n\n' + '3. ¿Cuál fue el impacto generado?\nComercio\n\n' + '4. ¿Cuáles fueron los descartes y validaciones realizadas por el asesor?\nSe valida que\n\n' + '5. Adjuntar evidencias\n\n' + '6. ¿Qué solución espera el comercio?\nSolicita\n\n' + '7. ¿Qué información adicional se necesita para la resolución?\n' + 'RUC: ' + v('b_ruc') + '\nID: ' + v('b_id') + '\nNombre: ' + v('b_nombre') + '\nCorreo: ' + v('b_correo') + '\nTeléfono: ' + v('b_telefono') + '\nTerminal: ' + v('b_terminal') + '\n\n8. Tickets previos relacionados: NO\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; copiarTextoP(texto, 'naranja', 'Reclamo copiado!'); }
+        function copiarSolicitud() { const v = id => (document.getElementById(id)?.value || '').trim(); const texto = 'Estimados, su apoyo con lo siguiente, por favor:\n\n' + 'RUC: ' + v('b_ruc') + '\nID: ' + v('b_id') + '\nNombre: ' + v('b_nombre') + '\nCorreo: ' + v('b_correo') + '\nTeléfono: ' + v('b_telefono') + '\nTerminal: ' + v('b_terminal') + '\n\nTickets previos relacionados: NO\nPASA VALIDACION N1/N2\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; copiarTextoP(texto, 'azul', 'SOLICITUD COPIADA!'); }
+        function copiarReclamo() { const v = id => (document.getElementById(id)?.value || '').trim(); const texto = 'Estimados, su apoyo, por favor, vendedor/a indica el siguiente reclamo:\n\n' + '1. Descripción del problema principal:\nVendedor/a reclama por\n\n' + '2. ¿Qué acción o proceso realizaba el vendedor/a cuando ocurrió?\nRealizando\n\n' + '3. ¿Cuál fue el impacto generado?\nVendedor/a\n\n' + '4. ¿Cuáles fueron los descartes y validaciones realizadas por el asesor?\nSe valida que\n\n' + '5. Adjuntar evidencias\n\n' + '6. ¿Qué solución espera el vendedor/a?\nSolicita\n\n' + '7. ¿Qué información adicional se necesita para la resolución?\n' + 'RUC: ' + v('b_ruc') + '\nID: ' + v('b_id') + '\nNombre: ' + v('b_nombre') + '\nCorreo: ' + v('b_correo') + '\nTeléfono: ' + v('b_telefono') + '\nTerminal: ' + v('b_terminal') + '\n\n8. Tickets previos relacionados: NO\n\nDaniel Q. Ramos\nCustomer Care - Call center.'; copiarTextoP(texto, 'naranja', 'RECLAMO COPIADO!'); }
 
         function copiarTextoP(texto, colorType, msg) {
             const hacer = () => showToast(msg, colorType);
             if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(texto).then(hacer); } 
             else { const el = document.createElement('textarea'); el.value = texto; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el); hacer(); }
-            if (plantillaActiva) { const btn = document.getElementById('btnCopiar'); if (btn) { const ogText = btn.textContent; btn.textContent = 'Copiado'; btn.classList.add('copiado'); setTimeout(() => { btn.textContent = ogText; btn.classList.remove('copiado'); }, 2000); } }
+            if (plantillaActiva) { const btn = document.getElementById('btnCopiar'); if (btn) { const ogText = btn.textContent; btn.textContent = 'COPIADO'; btn.classList.add('copiado'); setTimeout(() => { btn.textContent = ogText; btn.classList.remove('copiado'); }, 2000); } }
         }
 
-        function autoAjustar(el) { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; }
-        function limpiarTodoPlantillas() {
-            ['b_ruc', 'b_id', 'b_nombre', 'b_correo', 'b_telefono', 'b_terminal'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-            if (plantillaActiva) {
-                const p = PLANTILLAS[plantillaActiva]; const todos = [...(p.campos || []), ...(p.basicos || []), ...(p.preguntas || []).filter(q => !q.fijo)];
-                todos.forEach(c => { const el = document.getElementById(c.id); if (el) { el.value = c.prefijo || ''; autoAjustar(el); } });
-                ['co_dice', 'co_debeDecir', 'ca_motivo', 'ca_cambio'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-            }
+        function requestLimpiarTodoPlantillas() {
+            showConfirmModal('¿Estás seguro de limpiar todos los datos del formulario base?', () => {
+                ['b_ruc', 'b_id', 'b_nombre', 'b_correo', 'b_telefono', 'b_terminal'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+                if (plantillaActiva) {
+                    const p = PLANTILLAS[plantillaActiva]; const todos = [...(p.campos || []), ...(p.basicos || []), ...(p.preguntas || []).filter(q => !q.fijo)];
+                    todos.forEach(c => { const el = document.getElementById(c.id); if (el) { el.value = c.prefijo || ''; autoAjustar(el); } });
+                    ['co_dice', 'co_debeDecir', 'ca_motivo', 'ca_cambio'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+                }
+                showToast('Formulario limpiado', 'verde');
+            });
         }
 
         // === INICIALIZACIÓN GLOBAL ===
         window.addEventListener('DOMContentLoaded', () => {
-            // Renderizar el historial directamente
             renderH();
             
-            // Inicializar Dashboard
             document.getElementById('entryTime').value = localStorage.getItem('c-entry') || "08:00"; 
             document.getElementById('lunchTime').value = localStorage.getItem('c-lunch') || "13:00"; 
             document.getElementById('eodTime').value = localStorage.getItem('c-eod') || "18:00"; 
             actualizarTodosLosContadores();
             setInterval(actualizarTodosLosContadores, 1000);
             
-            // Renderizar las plantillas de WP guardadas localmente al cargar
             renderWpTemplates();
 
-            // Atajos de teclado Dashboard
             document.addEventListener('keydown', (e) => {
-                // Atajos para números del 1 al 7 para cambiar de módulo
                 if (e.key >= '1' && e.key <= '7' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
                     const idx = e.key;
                     const bubbles = document.querySelectorAll('.nav-bubbles .bubble');
-                    // Buscar la burbuja que tenga data-index igual al número presionado
                     for (let i = 0; i < bubbles.length; i++) {
                         if (bubbles[i].getAttribute('data-index') === idx) {
-                            bubbles[i].click(); // Simular clic
+                            bubbles[i].click(); 
                             break;
                         }
                     }
                 }
 
                 if (e.ctrlKey && e.key === 'Enter' && document.getElementById('tool-dashboard').classList.contains('active')) {
-                    // Buscar qué chat está activo e invocar el add respectivo
                     const activeContent = document.querySelector('#chatsContainer .val-content.active');
                     if (activeContent) {
                         const chatId = activeContent.id.replace('chatContent', '');
@@ -2178,7 +2304,6 @@
                 }
             });
 
-            // Inicializar Calculadora
             calcular();
         });
 
