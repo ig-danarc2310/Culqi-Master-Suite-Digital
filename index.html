@@ -462,8 +462,10 @@
         .f-field input, .f-field textarea { width: 100%; box-sizing: border-box; background: var(--input-bg); border: 1px solid var(--border); padding: 8px; border-radius: 6px; color: var(--text); font-family: inherit; font-size: 0.95rem;}
         
         .btn-add { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: 0.9rem; }
-        
-        .hist-view { padding: 12px; font-family: 'Consolas', monospace; font-size: 0.9rem; border: 1px solid var(--border); border-radius: 8px; transition: all 0.3s ease; white-space: pre-wrap; min-height: 80px; max-height: 250px; background: var(--surface); color: var(--text); overflow-y: auto; width: 100%; box-sizing: border-box;}
+        .btn-copy-reg { background: #607d8b; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: 0.9rem; margin-right: 8px;}
+        .btn-copy-reg:hover { background: #455a64; }
+
+        .hist-view { padding: 12px; font-family: 'Consolas', monospace; font-size: 0.9rem; border: 1px solid var(--border); border-radius: 8px; transition: all 0.3s ease; white-space: pre-wrap; height: 120px; resize: vertical; background: var(--surface); color: var(--text); overflow-y: auto; width: 100%; box-sizing: border-box;}
         
         .footer-actions { display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap;}
         .btn-foot { flex: 1; padding: 10px 2px; border-radius: 8px; border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 4px; min-width: 100px;} 
@@ -471,17 +473,16 @@
         /* === GESTOR DE PLANTILLAS WP === */
         .wp-tpl-container { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; margin-bottom: 10px; height: auto; max-height: none; width: 100%; overflow: visible;}
         
-        /* CORRECCIÓN: Contenedor del buscador con botón integrado (Requerimiento 1) */
         .wp-search-row { display: flex; gap: 8px; align-items: stretch; flex-shrink: 0; flex-wrap: wrap;}
         .search-input-wrapper {
             position: relative;
             flex: 1;
             display: flex;
-            align-items: stretch; /* Asegura que el contenedor tome la altura completa de la fila */
+            align-items: stretch; 
         }
         .wp-search-input { 
-            width: 100%; /* Toma todo el espacio de su wrapper */
-            padding: 10px 35px 10px 14px; /* Aumentado el padding derecho a 35px para dar espacio exacto a la X */
+            width: 100%; 
+            padding: 10px 35px 10px 14px; 
             border: 1px solid var(--border); 
             border-radius: 12px; 
             background: var(--input-bg); 
@@ -489,27 +490,26 @@
             font-size: 1rem; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
             min-width: 150px;
-            box-sizing: border-box; /* Fundamental para que el padding no desborde el input */
+            box-sizing: border-box; 
         }
         .wp-search-input:focus { border-color: var(--accent); outline: none; }
         
-        /* BOTON X PARA BUSCADOR MEJORADO (Alineación absoluta dentro de search-input-wrapper) */
         .btn-clear-search {
             position: absolute;
-            right: 5px; /* Fijado exactamente al margen derecho del input */
-            top: 50%; /* Centrado vertical */
-            transform: translateY(-50%); /* Centrado vertical exacto */
+            right: 5px; 
+            top: 50%; 
+            transform: translateY(-50%); 
             background: transparent;
             border: none;
             color: var(--text-dim);
-            font-family: system-ui, sans-serif; /* Tipografía limpia de sistema */
+            font-family: system-ui, sans-serif; 
             font-weight: bold;
-            font-size: 1rem; /* Letra legible pero contenida */
+            font-size: 1rem; 
             cursor: pointer;
-            display: none; /* Oculto por defecto */
+            display: none; 
             padding: 5px 10px;
             transition: color 0.2s;
-            height: 100%; /* Aprovecha el area para clics mas faciles */
+            height: 100%; 
         }
         .btn-clear-search:hover { color: var(--danger); }
 
@@ -519,6 +519,16 @@
         .btn-wp-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); font-size: 0.9rem; padding: 10px; }
         .btn-wp-secondary:hover { border-color: var(--accent); color: var(--accent); }
         
+        /* Estilos del Dropdown Menu */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; right: 0; background-color: var(--surface); min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; border-radius: 8px; border: 1px solid var(--border); overflow: hidden;}
+        .dropdown-content button { color: var(--text); padding: 12px 16px; text-decoration: none; display: block; background: transparent; border: none; width: 100%; text-align: left; cursor: pointer; font-size: 0.9rem; border-bottom: 1px solid var(--border);}
+        .dropdown-content button:last-child { border-bottom: none; }
+        .dropdown-content button:hover { background-color: var(--input-bg); }
+        .dropdown-content .delete-btn { color: var(--danger); font-weight: bold;}
+        .dropdown-content .delete-btn:hover { background-color: rgba(255, 23, 68, 0.1); }
+        .show { display: block; }
+
         .wp-list { display: flex; flex-direction: column; gap: 12px; padding: 5px; flex: 1; overflow: visible; height: auto; max-height: none;}
         
         .wp-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; transition: all 0.2s ease; cursor: pointer; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.03);}
@@ -879,7 +889,10 @@
                             <label class="f-label" onclick="copiarCampo('motivo1', this)">Motivo *</label>
                             <textarea id="motivo1" placeholder="Resumen de la atención..."></textarea>
                         </div>
-                        <button class="btn-add" style="margin-top: 10px; width: 100%;" onclick="agregarHistorial(1)">Añadir al Historial</button>
+                        <div style="display: flex; margin-top: 10px; width: 100%;">
+                            <button class="btn-copy-reg" onclick="copiarRegistroActivo(1)" title="Copiar registro">COPIAR REGISTRO</button>
+                            <button class="btn-add" style="flex: 1;" onclick="agregarHistorial(1)">Añadir al Historial</button>
+                        </div>
                     </div>
 
                     <!-- Chat 2 -->
@@ -908,7 +921,10 @@
                             <label class="f-label" onclick="copiarCampo('motivo2', this)">Motivo *</label>
                             <textarea id="motivo2" placeholder="Resumen de la atención..."></textarea>
                         </div>
-                        <button class="btn-add" style="margin-top: 10px; width: 100%;" onclick="agregarHistorial(2)">Añadir al Historial</button>
+                        <div style="display: flex; margin-top: 10px; width: 100%;">
+                            <button class="btn-copy-reg" onclick="copiarRegistroActivo(2)" title="Copiar registro">COPIAR REGISTRO</button>
+                            <button class="btn-add" style="flex: 1;" onclick="agregarHistorial(2)">Añadir al Historial</button>
+                        </div>
                     </div>
 
                     <!-- Chat 3 -->
@@ -937,7 +953,10 @@
                             <label class="f-label" onclick="copiarCampo('motivo3', this)">Motivo *</label>
                             <textarea id="motivo3" placeholder="Resumen de la atención..."></textarea>
                         </div>
-                        <button class="btn-add" style="margin-top: 10px; width: 100%;" onclick="agregarHistorial(3)">Añadir al Historial</button>
+                        <div style="display: flex; margin-top: 10px; width: 100%;">
+                            <button class="btn-copy-reg" onclick="copiarRegistroActivo(3)" title="Copiar registro">COPIAR REGISTRO</button>
+                            <button class="btn-add" style="flex: 1;" onclick="agregarHistorial(3)">Añadir al Historial</button>
+                        </div>
                     </div>
                 </div>
 
@@ -968,11 +987,18 @@
                         <input type="text" id="wpSearchInput" class="wp-search-input" placeholder="Buscar plantilla..." oninput="filterWpTemplates()">
                         <button type="button" class="btn-clear-search" id="btnWpSearchClear" onclick="clearWpSearch()">X</button>
                     </div>
-                    <button class="btn-wp-action" onclick="openWpModal()">+ Nueva</button>
-                    <button class="btn-wp-action btn-wp-secondary" onclick="requestDeleteAllWpTemplates()" title="Borrar todo">D.A</button>
-                    <button class="btn-wp-action btn-wp-secondary" onclick="exportWpTemplates()" title="Exportar JSON">Exportar</button>
+                    
+                    <!-- NUEVO BOTÓN MENÚ DROPDOWN (MÓDULO 3) -->
+                    <div class="dropdown">
+                        <button class="btn-wp-action" onclick="toggleDropdown()">MENÚ ▼</button>
+                        <div id="wpMenuDropdown" class="dropdown-content">
+                            <button onclick="openWpModal(); toggleDropdown()">Agregar plantilla</button>
+                            <button onclick="exportWpTemplates(); toggleDropdown()">Exportar</button>
+                            <button onclick="document.getElementById('wpImportFile').click(); toggleDropdown()">Importar</button>
+                            <button class="delete-btn" onclick="requestDeleteAllWpTemplates(); toggleDropdown()">Eliminar todo</button>
+                        </div>
+                    </div>
                     <input type="file" id="wpImportFile" style="display:none" accept=".json" onchange="importWpTemplates(event)">
-                    <button class="btn-wp-action btn-wp-secondary" onclick="document.getElementById('wpImportFile').click()" title="Importar JSON">Importar</button>
                 </div>
                 <div class="wp-list" id="wpTemplateList">
                     <!-- Las plantillas se renderizan aquí -->
@@ -1341,6 +1367,23 @@
             closeConfirmModal();
         });
 
+        // === DROPDOWN MENU ===
+        function toggleDropdown() {
+            document.getElementById("wpMenuDropdown").classList.toggle("show");
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.btn-wp-action')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
         // === GESTIÓN GLOBAL (Tema, Toast, Navegación) ===
         function toggleTheme() { 
             document.body.classList.toggle('light-mode'); 
@@ -1644,7 +1687,10 @@
                     <label class="f-label" onclick="copiarCampo('motivo${newId}', this)">Motivo *</label>
                     <textarea id="motivo${newId}" placeholder="Resumen de la atención..."></textarea>
                 </div>
-                <button class="btn-add" style="margin-top: 10px; width: 100%;" onclick="agregarHistorial(${newId})">Añadir al Historial</button>
+                <div style="display: flex; margin-top: 10px; width: 100%;">
+                    <button class="btn-copy-reg" onclick="copiarRegistroActivo(${newId})" title="Copiar registro">COPIAR REGISTRO</button>
+                    <button class="btn-add" style="flex: 1;" onclick="agregarHistorial(${newId})">Añadir al Historial</button>
+                </div>
             `;
             
             contentContainer.appendChild(contentDiv);
@@ -1669,6 +1715,40 @@
             
             if(content) content.classList.add('active');
             if(tabWrapper) tabWrapper.classList.add('active');
+        }
+
+        function generarTextoRegistro(chatIndex, horaStr) {
+            const vendedorEl = document.getElementById('vendedor' + chatIndex);
+            const docEl = document.getElementById('numDoc' + chatIndex);
+            const idEl = document.getElementById('idCom' + chatIndex);
+            const tickEl = document.getElementById('ticket' + chatIndex);
+            const motEl = document.getElementById('motivo' + chatIndex);
+            
+            let vendInfo = "";
+            if (vendedorEl && vendedorEl.value.trim() !== "") {
+                vendInfo = `VENDEDOR/A: ${vendedorEl.value.trim()}\n`;
+            }
+            
+            return `[${horaStr}] (Chat ${chatIndex})\n${vendInfo}DNI/RUC: ${docEl.value || ""}\nMatrícula/Código: ${idEl.value || "N/A"}\nTICKET: ${tickEl.value || "N/A"}\nMOTIVO: ${motEl.value || "..."}`;
+        }
+
+        function copiarRegistroActivo(chatIndex) {
+            const horaNow = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            const texto = generarTextoRegistro(chatIndex, horaNow);
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(texto).then(() => {
+                    showToast('Registro copiado', 'azul');
+                });
+            } else {
+                const el = document.createElement('textarea');
+                el.value = texto;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                showToast('Registro copiado', 'azul');
+            }
         }
 
         function agregarHistorial(chatIndex) {
@@ -1697,15 +1777,8 @@
 
             if(isEditing) { alert("Termina de editar antes de añadir nuevas entradas."); return; }
             
-            const d = docEl.value.trim();
             const horaNow = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            
-            let vendInfo = "";
-            if (vendedorEl && vendedorEl.value.trim() !== "") {
-                vendInfo = `VENDEDOR/A: ${vendedorEl.value.trim()}\n`;
-            }
-            
-            const nuevaEntrada = `[${horaNow}] (Chat ${chatIndex})\n${vendInfo}Matrícula / Código: ${idEl.value || "N/A"}\nTICKET: ${tickEl.value || "N/A"}\nMOTIVO: ${motEl.value || "..."}`;
+            const nuevaEntrada = generarTextoRegistro(chatIndex, horaNow);
             
             hits.push(nuevaEntrada); 
             nAtt++; 
@@ -1752,7 +1825,7 @@
                 btn.style.color = "#000";
                 
                 const content = hits.join("\n\n---\n\n"); 
-                box.innerHTML = `<textarea id="editArea" style="min-height: 150px; height: 100%; width: 100%; background: transparent; color: inherit; border: none; font-family: inherit; font-size: inherit; padding: 0; margin: 0; outline: none; box-shadow: none; resize: vertical;">${content}</textarea>`; 
+                box.innerHTML = `<textarea id="editArea" style="height: 100%; width: 100%; background: transparent; color: inherit; border: none; font-family: inherit; font-size: inherit; padding: 0; margin: 0; outline: none; box-shadow: none; resize: vertical;">${content}</textarea>`; 
                 
                 const textarea = document.getElementById('editArea');
                 textarea.style.height = textarea.scrollHeight + 'px';
